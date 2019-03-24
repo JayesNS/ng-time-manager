@@ -1,0 +1,12 @@
+<form (ngSubmit)="signIn()">
+  <label>
+    Username
+    <input type="text" name="username" [(ngModel)]="user.username">
+  </label>
+  <label>
+    Password:
+    <input type="password" name="password" [(ngModel)]="user.password">
+  </label>
+  <button type="submit">Sign In</button>
+</form>
+{{message}}

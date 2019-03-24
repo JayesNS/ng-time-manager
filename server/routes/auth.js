@@ -56,7 +56,7 @@ router.post('/signin', (req, res) => {
         }
 
         const token = jwt.sign(user.toJSON(), config.secret);
-        res.json({ success: true, token: 'JWT' + token });
+        res.json({ success: true, msg: 'Sign In success', token: 'JWT' + token });
       });
     }
   );
