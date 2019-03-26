@@ -1,32 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthState, SignInUser, selectAuthState } from '../../store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.sass']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit, OnDestroy {
   user = { username: '', password: '' };
   message: string;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private store: Store<AuthState>) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.select(selectAuthState).subscribe((state: AuthState) => {
+      this.message = state.authStatus.msg;
+    });
+  }
 
   signIn(): void {
-    this.auth.signIn(this.user).subscribe(
-      (response: any) => {
-        this.message = response.msg;
-        if (response.success) {
-          localStorage.setItem('jwtToken', response.token);
-          this.router.navigate(['']);
-        }
-      },
-      err => {
-        this.message = err.error.msg;
-      }
-    );
+    this.store.dispatch(new SignInUser(this.user));
   }
+
+  ngOnDestroy(): void {}
 }

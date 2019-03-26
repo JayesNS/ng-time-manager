@@ -32,7 +32,7 @@ router.post('/signup', (req, res) => {
 
 router.post('/signin', (req, res) => {
   if (!req.body.username || !req.body.password) {
-    return res.json({
+    return res.status(401).json({
       success: false,
       msg: 'You must include username and password in order to sign in'
     });

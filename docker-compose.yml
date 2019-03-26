@@ -6,7 +6,6 @@ services:
       - 27017:27017
     volumes:
       - .:/home/jszkarlat/Development/ng-life-assistant/data
-    restart: always
   life-assistant:
     build: .
     depends_on:
@@ -18,4 +17,3 @@ services:
       - 3000:3000
     environment:
       - MONGODB_HOST=mongodb://mongo:27017/life-assistant
-    restart: always
