@@ -7,7 +7,6 @@ services:
     volumes:
       - .:/home/jszkarlat/Development/ng-life-assistant/data
   life-assistant:
-    build: .
     depends_on:
       - mongo
     links:

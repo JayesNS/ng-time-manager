@@ -4,11 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { FormsModule } from '@angular/forms';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { reducer } from './store';
-import { AuthEffects } from './auth.effects';
+import { AuthEffects } from './effects/auth.effects';
+import { reducers } from './state';
 
 @NgModule({
   declarations: [SignInComponent, SignUpComponent],
@@ -16,7 +17,12 @@ import { AuthEffects } from './auth.effects';
     CommonModule,
     HttpClientModule,
     FormsModule,
-    StoreModule.forFeature('auth', reducer),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('jwtToken')
+      }
+    }),
+    StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects])
   ],
   exports: [SignInComponent, SignUpComponent]
