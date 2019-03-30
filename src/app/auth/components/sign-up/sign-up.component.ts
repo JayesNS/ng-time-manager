@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { State, selectSignUpPageError } from '../../state';
+import { Store } from '@ngrx/store';
+import { SignUp } from '../../actions/auth.actions';
+import { SignUpCredentials } from '../../models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -8,15 +11,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.sass']
 })
 export class SignUpComponent implements OnInit {
-  user = { username: '', password: '' };
-  message: string;
+  credentials: SignUpCredentials = { username: '', password: '' };
+  error$: Observable<string>;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private store: Store<State>) {
+    this.error$ = this.store.select(selectSignUpPageError);
+  }
 
   ngOnInit() {}
 
   signUp(): void {
-    this.auth.signUp(this.user).subscribe(
+    this.store.dispatch(new SignUp({ credentials: this.credentials }));
+    /* this.auth.signUp$(this.user).subscribe(
       (response: any) => {
         this.message = response.msg;
         if (response.success) {
@@ -26,6 +32,6 @@ export class SignUpComponent implements OnInit {
       err => {
         this.message = err.error.msg;
       }
-    );
+    ); */
   }
 }

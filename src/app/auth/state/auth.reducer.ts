@@ -14,7 +14,7 @@ const initialState: State = {
 export function reducer(state: State = initialState, action: AuthActions): State {
   switch (action.type) {
     case ActionTypes.SignInSuccess: {
-      return { ...state, token: action.payload.token, user: action.payload.user };
+      return { ...state, ...action.payload };
     }
     case ActionTypes.SignInFailure: {
       return initialState;

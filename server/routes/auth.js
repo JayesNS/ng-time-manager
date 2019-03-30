@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.post('/signup', (req, res) => {
   if (!req.body.username || !req.body.password) {
-    return res.json({ success: false, error: 'You must provide username and password to signup' });
+    return res.status(400).send('You must provide username and password to signup');
   }
 
   const newUser = new User({
@@ -23,18 +23,16 @@ router.post('/signup', (req, res) => {
 
   newUser.save(err => {
     if (err) {
-      return res.json({ success: false, error: 'User already exists' });
+      return res.status(400).send('User already exists');
     }
 
-    res.json({ success: true, error: 'User has been created' });
+    res.json({ error: null });
   });
 });
 
 router.post('/signin', (req, res) => {
   if (!req.body.username || !req.body.password) {
-    return res.status(401).json({
-      error: 'You must include username and password in order to sign in'
-    });
+    return res.status(400).send('You must include username and password in order to sign in');
   }
 
   User.findOne(
@@ -46,12 +44,12 @@ router.post('/signin', (req, res) => {
         throw err;
       }
       if (!user) {
-        return res.status(401).json({ error: 'User not found' });
+        return res.status(400).send('User not found');
       }
 
       user.comparePassword(req.body.password, (err, isMatch) => {
         if (err || !isMatch) {
-          return res.status(401).send({ error: 'Password is wrong' });
+          return res.status(400).send('Password is wrong');
         }
 
         const token = jwt.sign(user.toJSON(), config.secret, { expiresIn: '1h' });

@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { SignIn } from '../../actions/auth.actions';
-import { Credentials } from '../../models';
 import * as fromState from '../../state';
-import { EMPTY } from 'rxjs';
+import { SignInCredentials } from '../../models';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,7 +11,7 @@ import { EMPTY } from 'rxjs';
   styleUrls: ['./sign-in.component.sass']
 })
 export class SignInComponent implements OnInit, OnDestroy {
-  user: Credentials = { username: null, password: null };
+  credentials: SignInCredentials = { username: null, password: null };
   error$ = this.store.select(fromState.selectSignInPageError);
 
   constructor(private store: Store<fromState.State>) {}
@@ -20,7 +19,7 @@ export class SignInComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   signIn(): void {
-    this.store.dispatch(new SignIn(this.user));
+    this.store.dispatch(new SignIn({ credentials: this.credentials }));
   }
 
   ngOnDestroy(): void {}

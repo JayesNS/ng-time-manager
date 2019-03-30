@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../models';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Store } from '@ngrx/store';
+
+import { User, SignInCredentials, SignUpCredentials } from '../models';
+import { State, selectIsLoggedIn } from '../state';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+  constructor(
+    private http: HttpClient,
+    private jwtHelper: JwtHelperService,
+    private store: Store<State>
+  ) {}
 
-  signIn(user: User): Observable<any> {
-    return this.http.post('/auth/signin', user);
+  signIn$(credentials: SignInCredentials): Observable<any> {
+    return this.http.post('/auth/signin', credentials);
   }
 
-  signUp(user: User): Observable<any> {
-    return this.http.post('/auth/signup', user);
+  signUp$(credentials: SignUpCredentials): Observable<any> {
+    return this.http.post('/auth/signup', credentials);
   }
 
-  isUserAuthenticated(): boolean {
-    const token = this.jwtHelper.tokenGetter();
-
-    return !!token || !this.jwtHelper.isTokenExpired(token);
+  isUserAuthenticated$(): Observable<boolean> {
+    return this.store
+      .select(selectIsLoggedIn)
+      .pipe(map(isLoggedIn => isLoggedIn && !this.jwtHelper.isTokenExpired()));
   }
 }
