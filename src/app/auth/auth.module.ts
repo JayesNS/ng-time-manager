@@ -10,9 +10,10 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AuthEffects } from './effects/auth.effects';
 import { reducers } from './state';
+import { LogOutComponent } from './components/log-out/log-out.component';
 
 @NgModule({
-  declarations: [SignInComponent, SignUpComponent],
+  declarations: [SignInComponent, SignUpComponent, LogOutComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -25,6 +26,6 @@ import { reducers } from './state';
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects])
   ],
-  exports: [SignInComponent, SignUpComponent]
+  exports: [SignInComponent, SignUpComponent, LogOutComponent]
 })
 export class AuthModule {}

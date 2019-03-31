@@ -22,8 +22,8 @@ export const selectAuthUser = createSelector(
   fromAuth.selectUser
 );
 export const selectIsLoggedIn = createSelector(
-  selectAuthUser,
-  (user: User) => !!user
+  selectAuth,
+  (state: fromAuth.State) => !!state.token
 );
 
 export const selectSignInPage = (state: any) => state.auth.signInPage;

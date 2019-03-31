@@ -19,9 +19,13 @@ export function reducer(state: State = initialState, action: AuthActions): State
     case ActionTypes.SignInFailure: {
       return initialState;
     }
+    case ActionTypes.LogOut: {
+      return initialState;
+    }
     default:
       return state;
   }
 }
 
 export const selectUser = (state: State) => state.user;
+export const selectToken = (state: State) => state.token;

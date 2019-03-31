@@ -22,16 +22,5 @@ export class SignUpComponent implements OnInit {
 
   signUp(): void {
     this.store.dispatch(new SignUp({ credentials: this.credentials }));
-    /* this.auth.signUp$(this.user).subscribe(
-      (response: any) => {
-        this.message = response.msg;
-        if (response.success) {
-          this.router.navigate(['sign-in']);
-        }
-      },
-      err => {
-        this.message = err.error.msg;
-      }
-    ); */
   }
 }

@@ -6,6 +6,8 @@ export enum ActionTypes {
   SignInSuccess = '[Auth API] Sign in success',
   SignInFailure = '[Auth API] Sign in failure',
 
+  LogOut = '[Auth] Log out',
+
   SignUp = '[Sign Up Page] Sign up',
   SignUpSuccess = '[Auth API] Sign up success',
   SignUpFailure = '[Auth API] Sign up failure'
@@ -29,6 +31,10 @@ export class SignInFailure implements Action {
   constructor(public payload: { error: string }) {}
 }
 
+export class LogOut implements Action {
+  readonly type = ActionTypes.LogOut;
+}
+
 export class SignUp implements Action {
   readonly type = ActionTypes.SignUp;
 
@@ -49,6 +55,7 @@ export type AuthActions =
   | SignIn
   | SignInSuccess
   | SignInFailure
+  | LogOut
   | SignUp
   | SignUpSuccess
   | SignUpFailure;
