@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { SignIn } from '../../actions/auth.actions';
+import { SignIn, SignInWithGoogle } from '../../actions/auth.actions';
 import * as fromState from '../../state';
 import { SignInCredentials } from '../../models';
 
@@ -11,7 +11,7 @@ import { SignInCredentials } from '../../models';
   styleUrls: ['./sign-in.component.sass']
 })
 export class SignInComponent implements OnInit, OnDestroy {
-  credentials: SignInCredentials = { username: null, password: null };
+  credentials: SignInCredentials = { email: null, password: null };
   error$ = this.store.select(fromState.selectSignInPageError);
 
   constructor(private store: Store<fromState.State>) {}
@@ -20,6 +20,10 @@ export class SignInComponent implements OnInit, OnDestroy {
 
   signIn(): void {
     this.store.dispatch(new SignIn({ credentials: this.credentials }));
+  }
+
+  signInWithGoogle(): void {
+    this.store.dispatch(new SignInWithGoogle());
   }
 
   ngOnDestroy(): void {}

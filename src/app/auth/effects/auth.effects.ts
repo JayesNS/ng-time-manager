@@ -12,8 +12,11 @@ import {
   SignUp,
   SignUpSuccess,
   SignUpFailure,
-  LogOut
+  LogOut,
+  SignInWithGoogle
 } from '../actions/auth.actions';
+import { FirebaseAuth } from '@angular/fire';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable()
 export class AuthEffects {
@@ -23,8 +26,25 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.authService.signIn$(payload.credentials).pipe(
-        map((response: any) => new SignInSuccess({ token: response.token })),
+        map(() => {
+          const user = this.authService.user;
+          return new SignInSuccess({ user });
+        }),
         catchError(err => of(new SignInFailure(err)))
+      )
+    )
+  );
+
+  @Effect()
+  signInWithGoogle$ = this.actions$.pipe(
+    ofType<SignInWithGoogle>(ActionTypes.SignInWithGoogle),
+    switchMap(() =>
+      this.authService.signInWithGoogle$().pipe(
+        map(() => {
+          const user = this.authService.user;
+          return new SignInSuccess({ user });
+        }),
+        catchError(err => of(new SignInFailure({ error: err.message })))
       )
     )
   );
@@ -33,8 +53,7 @@ export class AuthEffects {
   successfulSignIn$ = this.actions$.pipe(
     ofType<SignInSuccess>(ActionTypes.SignInSuccess),
     map(action => action.payload),
-    switchMap(payload => {
-      localStorage.setItem('jwtToken', payload.token);
+    switchMap(() => {
       this.router.navigate(['']);
       return EMPTY;
     })
@@ -44,9 +63,8 @@ export class AuthEffects {
   logOut$ = this.actions$.pipe(
     ofType<LogOut>(ActionTypes.LogOut),
     switchMap(() => {
-      localStorage.removeItem('jwtToken');
       this.router.navigate(['']);
-      return EMPTY;
+      return this.authService.signOut$();
     })
   );
 
@@ -56,8 +74,8 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.authService.signUp$(payload.credentials).pipe(
-        map(response => new SignUpSuccess()),
-        catchError(err => of(new SignUpFailure(err)))
+        map(() => new SignUpSuccess()),
+        catchError(err => of(new SignUpFailure({ error: err.message })))
       )
     )
   );
@@ -65,14 +83,16 @@ export class AuthEffects {
   @Effect()
   signUpSuccess$ = this.actions$.pipe(
     ofType<SignUpSuccess>(ActionTypes.SignUpSuccess),
-    map(() => {
+    switchMap(() => {
       this.router.navigate(['sign-in']);
+      return EMPTY;
     })
   );
 
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private firebase: AngularFireAuth
   ) {}
 }

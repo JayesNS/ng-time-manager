@@ -1,7 +1,7 @@
 <form (ngSubmit)="signIn()">
   <label>
-    Username
-    <input type="text" name="username" [(ngModel)]="credentials.username">
+    E-mail
+    <input type="text" name="email" [(ngModel)]="credentials.email">
   </label>
   <label>
     Password:
@@ -10,3 +10,6 @@
   <button type="submit">Sign In</button>
 </form>
 {{error$ | async}}
+
+<button (click)="signInWithGoogle()">Sign In with Google</button>
+

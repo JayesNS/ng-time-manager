@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyARQgekVlqvj2tr-tZzZBVXbynA44Oax-Y',
+    authDomain: 'time-manager-9ecd6.firebaseapp.com',
+    databaseURL: 'https://time-manager-9ecd6.firebaseio.com',
+    projectId: 'time-manager-9ecd6',
+    storageBucket: 'time-manager-9ecd6.appspot.com',
+    messagingSenderId: '1007397482247'
+  }
 };
 
 /*

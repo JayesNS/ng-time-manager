@@ -3,6 +3,7 @@ import { SignInCredentials, SignUpCredentials } from '../models';
 
 export enum ActionTypes {
   SignIn = '[Sign In Page] Sign in',
+  SignInWithGoogle = '[Sign In Page] Sign in with Google',
   SignInSuccess = '[Auth API] Sign in success',
   SignInFailure = '[Auth API] Sign in failure',
 
@@ -19,10 +20,14 @@ export class SignIn implements Action {
   constructor(public payload: { credentials: SignInCredentials }) {}
 }
 
+export class SignInWithGoogle implements Action {
+  readonly type = ActionTypes.SignInWithGoogle;
+}
+
 export class SignInSuccess implements Action {
   readonly type = ActionTypes.SignInSuccess;
 
-  constructor(public payload: { token: string }) {}
+  constructor(public payload: { user: firebase.User }) {}
 }
 
 export class SignInFailure implements Action {
@@ -53,6 +58,7 @@ export class SignUpFailure implements Action {
 
 export type AuthActions =
   | SignIn
+  | SignInWithGoogle
   | SignInSuccess
   | SignInFailure
   | LogOut

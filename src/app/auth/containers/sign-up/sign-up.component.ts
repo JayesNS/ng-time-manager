@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./sign-up.component.sass']
 })
 export class SignUpComponent implements OnInit {
-  credentials: SignUpCredentials = { username: '', password: '' };
+  credentials: SignUpCredentials = { email: '', password: '' };
   error$: Observable<string>;
 
   constructor(private store: Store<State>) {

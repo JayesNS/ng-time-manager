@@ -2,7 +2,6 @@ import * as fromAuth from './auth.reducer';
 import * as fromSignIn from './sign-in.reducer';
 import * as fromSignUp from './sign-up.reducer';
 import { ActionReducerMap, createSelector } from '@ngrx/store';
-import { User } from '../models';
 
 export interface State {
   auth: fromAuth.State;
@@ -23,7 +22,7 @@ export const selectAuthUser = createSelector(
 );
 export const selectIsLoggedIn = createSelector(
   selectAuth,
-  (state: fromAuth.State) => !!state.token
+  (state: fromAuth.State) => !!state.user
 );
 
 export const selectSignInPage = (state: any) => state.auth.signInPage;

@@ -2,13 +2,11 @@ import { User } from '../models';
 import { ActionTypes, AuthActions } from '../actions/auth.actions';
 
 export interface State {
-  user: User;
-  token: string;
+  user: firebase.User;
 }
 
 const initialState: State = {
-  user: null,
-  token: null
+  user: null
 };
 
 export function reducer(state: State = initialState, action: AuthActions): State {
@@ -28,4 +26,3 @@ export function reducer(state: State = initialState, action: AuthActions): State
 }
 
 export const selectUser = (state: State) => state.user;
-export const selectToken = (state: State) => state.token;
