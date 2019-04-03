@@ -43,10 +43,4 @@ export class AuthService {
   signOut$(): Observable<void> {
     return from(this.firebase.auth.signOut());
   }
-
-  isUserAuthenticated$(): Observable<boolean> {
-    return this.store
-      .select(selectIsLoggedIn)
-      .pipe(map(isLoggedIn => isLoggedIn && !this.jwtHelper.isTokenExpired()));
-  }
 }

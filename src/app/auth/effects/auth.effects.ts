@@ -64,7 +64,8 @@ export class AuthEffects {
     ofType<LogOut>(ActionTypes.LogOut),
     switchMap(() => {
       this.router.navigate(['']);
-      return this.authService.signOut$();
+      this.authService.signOut$().subscribe();
+      return EMPTY;
     })
   );
 
@@ -92,7 +93,6 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private router: Router,
-    private firebase: AngularFireAuth
+    private router: Router
   ) {}
 }
