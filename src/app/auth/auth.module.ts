@@ -6,11 +6,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { FormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AuthEffects } from './effects/auth.effects';
 import { reducers } from './state';
 import { LogOutComponent } from './components/log-out/log-out.component';
+import { SignUpComponent } from './containers/sign-up/sign-up.component';
+import { SignInComponent } from './containers/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [SignInComponent, SignUpComponent, LogOutComponent],
