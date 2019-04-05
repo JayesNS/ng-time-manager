@@ -22,8 +22,10 @@ app.use(passport.initialize());
 
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
-app.use(express.static(path.join(__dirname, '../dist/ng-life-assistant')));
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
 app.use('/', express.static(path.join(__dirname, '../dist/ng-life-assistant')));
+app.use('*', express.static(path.join(__dirname, '../dist/ng-life-assistant')));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

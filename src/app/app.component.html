@@ -1,6 +1,6 @@
 <nav>
-  <a [routerLink]="['sign-in']">Sign In</a>
-  <a [routerLink]="['sign-up']">Sign Up</a>
+  <a *ngIf="!(isUserAuthenticated$ | async)" [routerLink]="['sign-in']">Sign In</a>
+  <a *ngIf="!(isUserAuthenticated$ | async)" [routerLink]="['sign-up']">Sign Up</a>
   <a [routerLink]="['']">Home</a>
   <app-log-out></app-log-out>
 </nav>

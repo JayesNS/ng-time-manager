@@ -15,8 +15,7 @@ import {
   LogOut,
   SignInWithGoogle
 } from '../actions/auth.actions';
-import { FirebaseAuth } from '@angular/fire';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Injectable()
 export class AuthEffects {
@@ -53,20 +52,26 @@ export class AuthEffects {
   successfulSignIn$ = this.actions$.pipe(
     ofType<SignInSuccess>(ActionTypes.SignInSuccess),
     map(action => action.payload),
-    switchMap(() => {
+    switchMap(payload => {
       this.router.navigate(['']);
-      return EMPTY;
+      return this.users.createUser$(this.authService.user).pipe(
+        switchMap(() => EMPTY),
+        catchError(() => EMPTY)
+      );
     })
   );
 
   @Effect()
   logOut$ = this.actions$.pipe(
     ofType<LogOut>(ActionTypes.LogOut),
-    switchMap(() => {
-      this.router.navigate(['']);
-      this.authService.signOut$().subscribe();
-      return EMPTY;
-    })
+    switchMap(() =>
+      this.authService.signOut$().pipe(
+        map(() => {
+          this.router.navigate(['']);
+          return EMPTY;
+        })
+      )
+    )
   );
 
   @Effect()
@@ -93,6 +98,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
+    private users: UserService,
     private router: Router
   ) {}
 }
