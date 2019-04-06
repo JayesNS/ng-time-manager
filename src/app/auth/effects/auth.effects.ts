@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
 import { of, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { AuthService } from '../services';
 import {
   ActionTypes,
   SignInSuccess,
