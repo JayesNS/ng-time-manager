@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DayViewComponent } from './day-view.component';
+import { ActivitiesTimelineComponent } from './activities-timeline.component';
 
-describe('DayViewComponent', () => {
-  let component: DayViewComponent;
-  let fixture: ComponentFixture<DayViewComponent>;
+describe('ActivitiesTimelineComponent', () => {
+  let component: ActivitiesTimelineComponent;
+  let fixture: ComponentFixture<ActivitiesTimelineComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DayViewComponent ]
+      declarations: [ ActivitiesTimelineComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DayViewComponent);
+    fixture = TestBed.createComponent(ActivitiesTimelineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

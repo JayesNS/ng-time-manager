@@ -7,7 +7,6 @@ import {
 } from './auth/services';
 import { SignInComponent, SignUpComponent } from './auth/containers';
 import { TimelineViewComponent } from './timeline/containers';
-import { DayViewComponent } from './timeline/components';
 
 const routes: Routes = [
   {
@@ -22,10 +21,7 @@ const routes: Routes = [
   },
   {
     path: 'timeline',
-    component: TimelineViewComponent,
-    canActivate: [AuthorizedGuard],
-    canActivateChild: [AuthorizedGuard],
-    children: [{ path: 'day', component: DayViewComponent }]
+    component: TimelineViewComponent
   },
   {
     path: '',

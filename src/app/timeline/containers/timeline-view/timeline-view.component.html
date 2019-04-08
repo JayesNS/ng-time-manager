@@ -1,2 +1,16 @@
-<app-timeline-legend></app-timeline-legend>
-<app-day-view></app-day-view>
+<input type="number" [(ngModel)]="interval" />
+<input type="number" [(ngModel)]="segmentHeight" />
+
+<div id="timeline-container">
+  <app-timeline-legend
+    id="timeline-legend"
+    [interval]="interval"
+    [segmentHeight]="segmentHeight"
+  ></app-timeline-legend>
+  <app-activities-timeline
+    id="activities-timeline"
+    [activities]="activities"
+    [interval]="interval"
+    [segmentHeight]="segmentHeight"
+  ></app-activities-timeline>
+</div>

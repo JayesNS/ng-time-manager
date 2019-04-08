@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DayViewComponent, ActivityComponent, TimelineLegendComponent } from './components';
+import {
+  ActivityComponent,
+  TimelineLegendComponent,
+  ActivitiesTimelineComponent
+} from './components';
 import { TimelineViewComponent } from './containers';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    DayViewComponent,
     ActivityComponent,
     TimelineLegendComponent,
-    TimelineViewComponent
+    TimelineViewComponent,
+    ActivitiesTimelineComponent
   ],
-  imports: [RouterModule, CommonModule, StoreModule.forFeature('timeline', {})]
+  imports: [RouterModule, CommonModule, FormsModule, StoreModule.forFeature('timeline', {})]
 })
 export class TimelineModule {}
