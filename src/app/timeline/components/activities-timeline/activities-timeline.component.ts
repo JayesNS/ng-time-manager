@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer2 } from '@angular/core';
+import { Activity } from '../../models';
 
 @Component({
   selector: 'app-activities-timeline',
@@ -8,7 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ActivitiesTimelineComponent implements OnInit {
   @Input() interval: number;
   @Input() segmentHeight: number;
-  @Input() activities: any[];
+  @Input() activities: Activity[];
 
   constructor() {}
 

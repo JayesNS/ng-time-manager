@@ -1,4 +1,4 @@
-<div class="activity" [ngStyle]="{ 'top.px': startPosition, 'height.px': activityHeight }">
+<div class="activity" #container>
   <div>{{ activity.startingAt | date: 'HH:mm' }} - {{ activity.endingAt | date: 'HH:mm' }}</div>
   {{ activity.title }}
 </div>

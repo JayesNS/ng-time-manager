@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ElementRef, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-timeline-legend',
@@ -6,36 +6,36 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
   styleUrls: ['./timeline-legend.component.sass']
 })
 export class TimelineLegendComponent implements OnInit, OnChanges {
-  readonly hoursInDay = 24;
+  private readonly _hoursInDay = 24;
+  private readonly _millisecondsInSecond = 1000;
+  private readonly _secondsInMinute = 60;
+  private readonly _minutesInHour = 60;
 
   @Input() segmentHeight: number;
   @Input() interval: number;
 
   markings: Date[];
 
-  constructor() {
+  constructor(private elRef: ElementRef, private renderer: Renderer2) {
     this.segmentHeight = 100;
     this.interval = 30;
   }
 
   calcHour(marking: number): Date {
-    const currentTime = new Date();
-    const currentDate = new Date(
-      currentTime.getFullYear(),
-      currentTime.getMonth(),
-      currentTime.getDate()
+    const currentDate = new Date().setHours(0, 0, 0, 0);
+    return new Date(
+      currentDate + marking * this._millisecondsInSecond * this._secondsInMinute * this.interval
     );
-    return new Date(currentDate.getTime() + marking * 1000 * 60 * this.interval);
   }
 
   ngOnInit() {}
   ngOnChanges() {
-    const markingAmount = this.hoursInDay * (60 / this.interval);
+    const markingAmount = this._hoursInDay * (this._minutesInHour / this.interval);
 
-    if (markingAmount % 1 !== 0) {
-      return;
-    }
+    this.markings = new Array(Math.round(markingAmount));
 
-    this.markings = new Array(markingAmount);
+    Array.from(this.elRef.nativeElement.children).forEach(element =>
+      this.renderer.setStyle(element, 'height', this.segmentHeight + 'px')
+    );
   }
 }

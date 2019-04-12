@@ -1,41 +1,34 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { Activity } from '../../models';
 
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.sass']
 })
-export class ActivityComponent implements OnInit, OnChanges {
-  @Input() activity: any;
-  @Input() segmentHeight: number;
-  @Input() interval: number;
+export class ActivityComponent implements OnChanges {
+  @Input() activity: Activity;
+  @Input() pixelsToMinutesRatio: number;
 
-  activityHeight: number;
-  startPosition: number;
+  @ViewChild('container') container: ElementRef;
 
-  constructor() {}
-
-  ngOnInit() {}
+  constructor(private renderer: Renderer2) {}
   ngOnChanges() {
-    this.activityHeight = this.calcHeight();
-    this.startPosition = this.calcStartPosition();
+    this.renderer.setStyle(this.container.nativeElement, 'top', this.startPosition + 'px');
+    this.renderer.setStyle(this.container.nativeElement, 'height', this.height + 'px');
   }
 
-  calcStartPosition() {
-    const currentTime = new Date();
-    const currentDate: any = new Date(
-      currentTime.getFullYear(),
-      currentTime.getMonth(),
-      currentTime.getDate()
-    );
+  get startPosition() {
+    const currentDate = new Date().setHours(0, 0, 0, 0);
     const startTime = this.activity.startingAt;
-    const millisecondsInDay = startTime - currentDate;
-    return Math.round((millisecondsInDay / 1000 / 60) * (this.segmentHeight / this.interval));
+    const millisecondOfDay = startTime.getTime() - currentDate;
+    const minuteOfDay = millisecondOfDay / 1000 / 60;
+    return Math.round(minuteOfDay * this.pixelsToMinutesRatio);
   }
 
-  calcHeight() {
-    const timeDifference = this.activity.endingAt - this.activity.startingAt;
-    const lengthInMinutes = timeDifference / 60 / 1000;
-    return Math.round(lengthInMinutes * (this.segmentHeight / this.interval));
+  get height() {
+    const timeDifference = this.activity.endingAt.getTime() - this.activity.startingAt.getTime();
+    const lengthInMinutes = timeDifference / 1000 / 60;
+    return Math.round(lengthInMinutes * this.pixelsToMinutesRatio);
   }
 }

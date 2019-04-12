@@ -1,6 +1,5 @@
 <app-activity
   *ngFor="let activity of activities"
   [activity]="activity"
-  [segmentHeight]="segmentHeight"
-  [interval]="interval"
+  [pixelsToMinutesRatio]="segmentHeight / interval"
 ></app-activity>

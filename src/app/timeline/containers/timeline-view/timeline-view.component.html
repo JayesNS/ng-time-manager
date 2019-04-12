@@ -1,7 +1,11 @@
-<input type="number" [(ngModel)]="interval" />
+<select [(ngModel)]="interval">
+  <option *ngFor="let interval of intervals; first as first" [selected]="!!first">{{
+    interval
+  }}</option>
+</select>
 <input type="number" [(ngModel)]="segmentHeight" />
 
-<div id="timeline-container">
+<div id="timeline-container" #container>
   <app-timeline-legend
     id="timeline-legend"
     [interval]="interval"
