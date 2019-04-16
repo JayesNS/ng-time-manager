@@ -1,0 +1,14 @@
+<div id="timeline-container" #container>
+  <div id="time-indicator" #timeIndicator></div>
+  <app-timeline-legend
+    id="timeline-legend"
+    [interval]="interval"
+    [segmentHeight]="segmentHeight"
+  ></app-timeline-legend>
+  <app-activities-timeline
+    id="activities-timeline"
+    [activities]="activities"
+    [interval]="interval"
+    [segmentHeight]="segmentHeight"
+  ></app-activities-timeline>
+</div>

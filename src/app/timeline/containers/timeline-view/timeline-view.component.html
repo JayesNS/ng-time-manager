@@ -4,17 +4,8 @@
   }}</option>
 </select>
 <input type="number" [(ngModel)]="segmentHeight" />
-
-<div id="timeline-container" #container>
-  <app-timeline-legend
-    id="timeline-legend"
-    [interval]="interval"
-    [segmentHeight]="segmentHeight"
-  ></app-timeline-legend>
-  <app-activities-timeline
-    id="activities-timeline"
-    [activities]="activities"
-    [interval]="interval"
-    [segmentHeight]="segmentHeight"
-  ></app-activities-timeline>
-</div>
+<app-timeline
+  [activities]="activities"
+  [interval]="interval"
+  [segmentHeight]="segmentHeight"
+></app-timeline>
