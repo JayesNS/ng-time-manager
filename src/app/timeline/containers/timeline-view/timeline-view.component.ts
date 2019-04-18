@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { Activity } from '../../models';
+import { Store } from '@ngrx/store';
+import * as fromStore from '../../state';
+import { LoadActivities } from '../../actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-timeline-view',
@@ -12,18 +16,11 @@ export class TimelineViewComponent {
   interval = 60;
   segmentHeight = 100;
 
-  activities: Activity[] = [
-    {
-      type: 'todo',
-      title: 'Shopping',
-      startingAt: new Date(2019, 3, 16, 13, 45),
-      endingAt: new Date(2019, 3, 16, 14, 30)
-    },
-    {
-      type: 'todo',
-      title: 'Cleaning',
-      startingAt: new Date(2019, 3, 16, 7, 45),
-      endingAt: new Date(2019, 3, 16, 9, 0)
-    }
-  ];
+  activities$: Observable<Activity[]>;
+
+  constructor(private store: Store<fromStore.State>) {
+    this.store.dispatch(new LoadActivities());
+
+    this.activities$ = this.store.select(fromStore.selectTodaysActivities);
+  }
 }

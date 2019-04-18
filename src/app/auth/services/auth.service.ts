@@ -13,11 +13,7 @@ import { auth } from 'firebase/app';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(
-    private jwtHelper: JwtHelperService,
-    private firebase: AngularFireAuth,
-    private store: Store<State>
-  ) {}
+  constructor(private firebase: AngularFireAuth, private store: Store<State>) {}
 
   signIn$(credentials: SignInCredentials): Observable<any> {
     return from(

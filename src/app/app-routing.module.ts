@@ -6,22 +6,15 @@ import {
   AuthorizedGuardService as AuthorizedGuard
 } from './auth/services';
 import { SignInComponent, SignUpComponent } from './auth/containers';
-import { TimelineViewComponent } from './timeline/containers';
 
 const routes: Routes = [
   {
-    path: 'sign-in',
-    component: SignInComponent,
-    canActivate: [NotAuthorizedGuard]
-  },
-  {
-    path: 'sign-up',
-    component: SignUpComponent,
-    canActivate: [NotAuthorizedGuard]
+    path: 'auth',
+    loadChildren: './auth/auth.module#AuthModule'
   },
   {
     path: 'timeline',
-    component: TimelineViewComponent
+    loadChildren: './timeline/timeline.module#TimelineModule'
   },
   {
     path: '',

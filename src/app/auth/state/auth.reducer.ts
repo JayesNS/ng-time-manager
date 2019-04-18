@@ -1,4 +1,3 @@
-import { User } from '../models';
 import { ActionTypes, AuthActions } from '../actions/auth.actions';
 
 export interface State {

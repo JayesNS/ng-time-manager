@@ -24,8 +24,7 @@ import { TimelineModule } from './timeline/timeline.module';
     StoreDevtoolsModule.instrument({ maxAge: 5 }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AuthModule,
-    TimelineModule
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

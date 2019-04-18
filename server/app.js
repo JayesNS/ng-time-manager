@@ -20,8 +20,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: 'false' }));
 app.use(passport.initialize());
 
-const authRoutes = require('./routes/auth');
-app.use('/auth', authRoutes);
+//const authRoutes = require('./routes/auth');
+//app.use('/auth', authRoutes);
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 app.use('/', express.static(path.join(__dirname, '../dist/ng-life-assistant')));

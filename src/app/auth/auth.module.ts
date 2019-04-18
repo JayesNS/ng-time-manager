@@ -11,18 +11,20 @@ import { reducers } from './state';
 import { LogOutComponent } from './components/log-out/log-out.component';
 import { SignUpComponent } from './containers/sign-up/sign-up.component';
 import { SignInComponent } from './containers/sign-in/sign-in.component';
+import { AuthRoutingModule } from './auth-routing.module';
 
 @NgModule({
   declarations: [SignInComponent, SignUpComponent, LogOutComponent],
   imports: [
     CommonModule,
     HttpClientModule,
+    AuthRoutingModule,
     FormsModule,
-    JwtModule.forRoot({
+    /* JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('jwtToken')
       }
-    }),
+    }), */
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects])
   ],

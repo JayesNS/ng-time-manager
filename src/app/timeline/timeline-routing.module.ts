@@ -3,11 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { TimelineViewComponent } from './containers/timeline-view/timeline-view.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'day', pathMatch: 'full' },
-  {
-    path: 'day',
-    component: TimelineViewComponent
-  }
+  { path: '', pathMatch: 'full', redirectTo: 'day' },
+  { path: 'day', component: TimelineViewComponent }
 ];
 
 @NgModule({

@@ -5,7 +5,7 @@
 </select>
 <input type="number" [(ngModel)]="segmentHeight" />
 <app-timeline
-  [activities]="activities"
+  [activities]="activities$ | async"
   [interval]="interval"
   [segmentHeight]="segmentHeight"
 ></app-timeline>
