@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, Renderer2, ViewChild, ElementRef } from '@angular/core';
-
 import { Activity } from '../../models';
 
 @Component({

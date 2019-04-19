@@ -8,7 +8,6 @@ import {
   Input,
   OnInit
 } from '@angular/core';
-
 import { Activity } from '../../models';
 
 @Component({

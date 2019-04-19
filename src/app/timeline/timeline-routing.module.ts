@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TimelineViewComponent } from './containers';
+import { TimelineViewComponent } from './containers/timeline-view/timeline-view.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'day' },

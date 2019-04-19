@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { State, selectSignUpPageError } from '../../state';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-
 import { SignUp } from '../../actions/auth.actions';
 import { SignUpCredentials } from '../../models';
-import { State, selectSignUpPageError } from '../../state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
