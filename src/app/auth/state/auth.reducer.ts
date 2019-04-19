@@ -1,17 +1,17 @@
 import { ActionTypes, AuthActions } from '../actions/auth.actions';
 
 export interface State {
-  user: firebase.User;
+  firebaseUser: firebase.User;
 }
 
 const initialState: State = {
-  user: null
+  firebaseUser: null
 };
 
 export function reducer(state: State = initialState, action: AuthActions): State {
   switch (action.type) {
     case ActionTypes.SignInSuccess: {
-      return { ...state, ...action.payload };
+      return { ...state, firebaseUser: action.payload.firebaseUser };
     }
     case ActionTypes.SignInFailure: {
       return initialState;
@@ -24,4 +24,4 @@ export function reducer(state: State = initialState, action: AuthActions): State
   }
 }
 
-export const selectUser = (state: State) => state.user;
+export const selectUser = (state: State) => state.firebaseUser;

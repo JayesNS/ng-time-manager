@@ -1,4 +1,6 @@
+import { Activity } from 'src/app/timeline/models';
+
 export interface User {
-  username: string;
-  password: string;
+  _id: string;
+  activties: Activity[];
 }

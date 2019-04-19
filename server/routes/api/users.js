@@ -12,4 +12,26 @@ router.post('/', (req, res) => {
     });
 });
 
+router.get('/', (req, res) => {
+  User.find()
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {
+      console.log({ err });
+      res.status(503).json(err);
+    });
+});
+
+router.get('/:firebaseUid', (req, res) => {
+  const firebaseUid = req.params.firebaseUid;
+  User.findOne({ firebaseUid })
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => {
+      res.status(503).json(err);
+    });
+});
+
 module.exports = router;

@@ -6,7 +6,8 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
+  activities: [{ type: Schema.Types.ObjectId, rel: 'Activity' }]
 });
 
 module.exports = mongoose.model('User', UserSchema);

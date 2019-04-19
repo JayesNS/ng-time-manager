@@ -17,6 +17,7 @@ import {
   SignInWithGoogle
 } from '../actions/auth.actions';
 import { UserService } from '../../shared/services';
+import { LoadUser } from '../actions/users.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -27,8 +28,8 @@ export class AuthEffects {
     switchMap(payload =>
       this.authService.signIn$(payload.credentials).pipe(
         map(() => {
-          const user = this.authService.user;
-          return new SignInSuccess({ user });
+          const firebaseUser = this.authService.user;
+          return new SignInSuccess({ firebaseUser });
         }),
         catchError(err => of(new SignInFailure(err)))
       )
@@ -41,8 +42,8 @@ export class AuthEffects {
     switchMap(() =>
       this.authService.signInWithGoogle$().pipe(
         map(() => {
-          const user = this.authService.user;
-          return new SignInSuccess({ user });
+          const firebaseUser = this.authService.user;
+          return new SignInSuccess({ firebaseUser });
         }),
         catchError(err => of(new SignInFailure({ error: err.message })))
       )
@@ -56,8 +57,11 @@ export class AuthEffects {
     switchMap(payload => {
       this.router.navigate(['']);
       return this.users.createUser$(this.authService.user).pipe(
-        switchMap(() => EMPTY),
-        catchError(() => EMPTY)
+        map(user => {
+          console.log({ user });
+          return EMPTY;
+        }),
+        catchError(() => of(new LoadUser({ firebaseUid: payload.firebaseUser.uid })))
       );
     })
   );

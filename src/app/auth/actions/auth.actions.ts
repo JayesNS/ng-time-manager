@@ -27,7 +27,7 @@ export class SignInWithGoogle implements Action {
 export class SignInSuccess implements Action {
   readonly type = ActionTypes.SignInSuccess;
 
-  constructor(public payload: { user: firebase.User }) {}
+  constructor(public payload: { firebaseUser: firebase.User }) {}
 }
 
 export class SignInFailure implements Action {
