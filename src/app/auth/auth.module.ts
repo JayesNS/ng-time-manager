@@ -4,14 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { FormsModule } from '@angular/forms';
-import { JwtModule } from '@auth0/angular-jwt';
 
-import { AuthEffects } from './effects/auth.effects';
-import { reducers } from './state';
-import { LogOutComponent } from './components/log-out/log-out.component';
-import { SignUpComponent } from './containers/sign-up/sign-up.component';
-import { SignInComponent } from './containers/sign-in/sign-in.component';
 import { AuthRoutingModule } from './auth-routing.module';
+import { SignInComponent, SignUpComponent } from './containers';
+import { LogOutComponent } from './components';
+import { reducers } from './state';
+import { AuthEffects } from './effects';
 
 @NgModule({
   declarations: [SignInComponent, SignUpComponent, LogOutComponent],
@@ -20,11 +18,6 @@ import { AuthRoutingModule } from './auth-routing.module';
     HttpClientModule,
     AuthRoutingModule,
     FormsModule,
-    /* JwtModule.forRoot({
-      config: {
-        tokenGetter: () => localStorage.getItem('jwtToken')
-      }
-    }), */
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects])
   ],

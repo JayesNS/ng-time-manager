@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { ActionTypes, LoadActivities } from '../actions';
-import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { ActionTypes, LoadActivities } from '../actions';
 
 @Injectable()
 export class TimelineEffects {

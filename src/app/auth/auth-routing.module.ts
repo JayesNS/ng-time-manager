@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { SignInComponent, SignUpComponent } from './containers';
 import { NotAuthorizedGuardService as NotAuthorizedGuard } from './services';
 

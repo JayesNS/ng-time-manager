@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Store } from '@ngrx/store';
-
-import { SignInCredentials, SignUpCredentials } from '../models';
-import { State, selectIsLoggedIn } from '../state';
-import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
+import { Observable, from, of } from 'rxjs';
+
+import { SignInCredentials, SignUpCredentials } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private firebase: AngularFireAuth, private store: Store<State>) {}
+  constructor(private firebase: AngularFireAuth) {}
 
   signIn$(credentials: SignInCredentials): Observable<any> {
     return from(

@@ -1,6 +1,5 @@
 import { Activity } from '../models';
 import { TimelineActions, ActionTypes } from '../actions';
-import { createSelector } from '@ngrx/store';
 
 export interface State {
   activities: Activity[];

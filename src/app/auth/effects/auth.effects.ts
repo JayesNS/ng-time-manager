@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
-import { Router } from '@angular/router';
 
 import { AuthService } from '../services';
 import {
@@ -16,7 +16,7 @@ import {
   LogOut,
   SignInWithGoogle
 } from '../actions/auth.actions';
-import { UserService } from 'src/app/shared/services/user.service';
+import { UserService } from '../../shared/services';
 
 @Injectable()
 export class AuthEffects {

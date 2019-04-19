@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { State, selectAuthUser } from '../state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { State, selectAuthUser } from '../state';
 
 @Injectable({
   providedIn: 'root'
