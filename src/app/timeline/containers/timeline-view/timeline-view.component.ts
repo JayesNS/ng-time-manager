@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Activity } from '../../models';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { Activity } from '../../models';
 import * as fromStore from '../../state';
 import { LoadActivities } from '../../actions';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-timeline-view',
