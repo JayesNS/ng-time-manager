@@ -19,6 +19,7 @@ export function reducer(state: State = initialState, action: AuthActions): State
       return initialState;
     }
     case ActionTypes.SignInFailure: {
+      // TODO: error doesn't change
       return { ...state, pending: false, error: action.payload.error };
     }
     default: {

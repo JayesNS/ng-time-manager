@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ActivitySchema = new Schema({
+const activitySchema = Schema({
   type: {
     type: String,
     enum: ['todo'],
@@ -21,4 +21,4 @@ const ActivitySchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Activity', ActivitySchema);
+module.exports = mongoose.model('Activity', activitySchema);

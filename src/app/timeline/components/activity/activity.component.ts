@@ -21,14 +21,15 @@ export class ActivityComponent implements OnChanges {
 
   get startPosition() {
     const currentDate = new Date().setHours(0, 0, 0, 0);
-    const startTime = this.activity.startingAt;
+    const startTime = new Date(this.activity.startingAt);
     const millisecondOfDay = startTime.getTime() - currentDate;
     const minuteOfDay = millisecondOfDay / 1000 / 60;
     return Math.round(minuteOfDay * this.pixelsToMinutesRatio);
   }
 
   get height() {
-    const timeDifference = this.activity.endingAt.getTime() - this.activity.startingAt.getTime();
+    const timeDifference =
+      new Date(this.activity.endingAt).getTime() - new Date(this.activity.startingAt).getTime();
     const lengthInMinutes = timeDifference / 1000 / 60;
     return Math.round(lengthInMinutes * this.pixelsToMinutesRatio);
   }

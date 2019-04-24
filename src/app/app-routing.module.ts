@@ -14,7 +14,8 @@ const routes: Routes = [
   },
   {
     path: 'timeline',
-    loadChildren: './timeline/timeline.module#TimelineModule'
+    loadChildren: './timeline/timeline.module#TimelineModule',
+    canActivate: [AuthorizedGuard]
   },
   {
     path: '',

@@ -1,5 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const Types = mongoose.Types;
+const Schema = mongoose.Schema;
+const Activity = require('../../models/activity');
 const User = require('../../models/user');
 
 router.post('/', (req, res) => {
@@ -18,7 +22,7 @@ router.get('/', (req, res) => {
       res.json(users);
     })
     .catch(err => {
-      console.log({ err });
+      console.error({ err });
       res.status(503).json(err);
     });
 });

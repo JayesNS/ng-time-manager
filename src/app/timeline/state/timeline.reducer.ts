@@ -3,32 +3,35 @@ import { TimelineActions, ActionTypes } from '../actions';
 
 export interface State {
   activities: Activity[];
+  pending: boolean;
 }
 
-// TODO: mock activities
-const mockActivities: Activity[] = [
-  {
-    type: 'todo',
-    title: 'Shopping',
-    startingAt: new Date(2019, 3, 18, 13, 45),
-    endingAt: new Date(2019, 3, 18, 14, 30)
-  },
-  {
-    type: 'todo',
-    title: 'Cleaning',
-    startingAt: new Date(2019, 3, 16, 7, 45),
-    endingAt: new Date(2019, 3, 16, 9, 0)
-  }
-];
-
 const initialState: State = {
-  activities: []
+  activities: [],
+  pending: false
 };
 
 export function reducer(state: State = initialState, action: TimelineActions) {
   switch (action.type) {
-    case ActionTypes.LoadActivities:
-      return { ...state, activities: mockActivities };
+    case ActionTypes.LoadActivitiesSuccess: {
+      return { ...state, activities: action.payload.activities };
+    }
+    case ActionTypes.LoadActivitiesFailure: {
+      return { ...state };
+    }
+    case ActionTypes.AddActivity: {
+      return { ...state, pending: true };
+    }
+    case ActionTypes.AddActivitySuccess: {
+      return {
+        ...state,
+        pending: false,
+        activities: [...state.activities, action.payload.activity]
+      };
+    }
+    case ActionTypes.AddActivityFailure: {
+      return { ...state, loading: false };
+    }
     default: {
       return state;
     }

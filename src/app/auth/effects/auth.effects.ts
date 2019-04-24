@@ -57,15 +57,13 @@ export class AuthEffects {
     switchMap(payload => {
       this.router.navigate(['']);
       return this.users.createUser$(this.authService.user).pipe(
-        map(user => {
-          console.log({ user });
-          return EMPTY;
-        }),
+        map(() => EMPTY),
         catchError(() => of(new LoadUser({ firebaseUid: payload.firebaseUser.uid })))
       );
     })
   );
 
+  // TODO: fix invalid action dispatching
   @Effect()
   logOut$ = this.actions$.pipe(
     ofType<LogOut>(ActionTypes.LogOut),
@@ -73,6 +71,10 @@ export class AuthEffects {
       this.authService.signOut$().pipe(
         map(() => {
           this.router.navigate(['']);
+          return EMPTY;
+        }),
+        catchError(err => {
+          console.error({ err });
           return EMPTY;
         })
       )
