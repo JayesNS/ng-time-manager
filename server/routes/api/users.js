@@ -7,11 +7,19 @@ const helpers = require('../../helpers');
 
 // Add new user
 router.post('/', (req, res) => {
+  console.log({ body: req.body });
   const { firebaseUid } = helpers.fetchParams(req.body, ['firebaseUid']);
-  const newUser = new User({ firebaseUid });
-  newUser
-    .save()
-    .then(() => res.send(''))
+
+  User.findOne({ firebaseUid })
+    .then(user => {
+      if (!user) {
+        const newUser = new User({ firebaseUid });
+        return newUser.save();
+      } else {
+        res.status(503);
+      }
+    })
+    .then(user => res.json(user))
     .catch(error => {
       helpers.handleError(error, res, 503);
     });

@@ -11,28 +11,28 @@ import { SignInCredentials, SignUpCredentials } from '../models';
 export class AuthService {
   constructor(private firebase: AngularFireAuth) {}
 
-  signIn$(credentials: SignInCredentials): Observable<any> {
+  signIn$(credentials: SignInCredentials): Observable<auth.UserCredential> {
     return from(
       this.firebase.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
     );
   }
 
-  signUp$(credentials: SignUpCredentials): Observable<any> {
+  signUp$(credentials: SignUpCredentials): Observable<auth.UserCredential> {
     return from(
       this.firebase.auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
     );
   }
 
-  signInWithGoogle$() {
+  signInWithGoogle$(): Observable<auth.UserCredential> {
     const googleProvider = new auth.GoogleAuthProvider();
     return from(this.firebase.auth.signInWithPopup(googleProvider));
   }
 
-  get user(): firebase.User {
-    return this.firebase.auth.currentUser;
-  }
-
   signOut$(): Observable<void> {
     return from(this.firebase.auth.signOut());
+  }
+
+  get user(): firebase.User {
+    return this.firebase.auth.currentUser;
   }
 }

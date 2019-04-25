@@ -3,9 +3,9 @@ import { User } from 'src/app/auth/models';
 import { Activity } from '../models';
 
 export enum ActionTypes {
-  LoadActivities = '[Timeline Page] Load actions',
-  LoadActivitiesSuccess = '[Activity API] Load actions success',
-  LoadActivitiesFailure = '[Activity API] Load actions failure',
+  LoadActivities = '[Timeline Page] Load activities',
+  LoadActivitiesSuccess = '[Activity API] Load activities success',
+  LoadActivitiesFailure = '[Activity API] Load activities failure',
 
   AddActivity = '[Timeline Page] Add activity',
   AddActivitySuccess = '[Activity API] Add activity success',

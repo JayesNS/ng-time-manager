@@ -8,7 +8,9 @@ import {
   LoadActivities,
   AddActivity,
   LoadActivitiesSuccess,
-  LoadActivitiesFailure
+  LoadActivitiesFailure,
+  AddActivitySuccess,
+  AddActivityFailure
 } from '../actions';
 import { ActivitiesService } from '../services/activities.service';
 
@@ -30,13 +32,19 @@ export class TimelineEffects {
     })
   );
 
-  // TODO: complete effect
   @Effect()
   addActivity$ = this.actions$.pipe(
     ofType<AddActivity>(ActionTypes.AddActivity),
     map(action => action.payload),
     switchMap(payload => {
-      return EMPTY;
+      return this.activities
+        .addActivity$(payload.user, payload.activity)
+        .pipe(
+          map(
+            activity => new AddActivitySuccess({ activity: payload.activity }),
+            catchError(err => of(new AddActivityFailure({ error: err })))
+          )
+        );
     })
   );
 }

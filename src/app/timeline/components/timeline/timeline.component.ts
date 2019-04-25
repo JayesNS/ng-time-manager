@@ -32,7 +32,7 @@ export class TimelineComponent implements OnInit, OnChanges, AfterViewInit {
     setInterval(() => this.moveTimeIndicatorToNow(), 1000);
   }
 
-  // TODO: scrollToNow not working when segmentHeight changes
+  // FIXME: scrollToNow not working when segmentHeight changes
   ngAfterViewInit(): void {
     this.scrollToNow();
     this.moveTimeIndicatorToNow();

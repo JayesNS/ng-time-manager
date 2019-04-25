@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { Activity } from '../../models';
 import * as fromStore from '../../state';
-import { LoadActivities } from '../../actions';
+import { LoadActivities, AddActivity } from '../../actions';
 import { User } from 'src/app/auth/models';
 import { ActivitiesService } from '../../services/activities.service';
 import { selectUsers } from 'src/app/auth/state';
@@ -37,10 +37,10 @@ export class TimelineViewComponent implements OnDestroy {
     const activity: Activity = {
       type: 'todo',
       title: 'Coding',
-      startingAt: new Date(2019, 3, 24, 7, 45),
-      endingAt: new Date(2019, 3, 24, 9, 0)
+      startingAt: new Date(2019, 3, 25, 7, 45),
+      endingAt: new Date(2019, 3, 25, 9, 0)
     };
-    this.activities.addActivity$(this.user, activity).subscribe();
+    this.store.dispatch(new AddActivity({ user: this.user, activity }));
   }
 
   ngOnDestroy(): void {

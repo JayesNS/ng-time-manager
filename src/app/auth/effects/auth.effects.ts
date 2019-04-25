@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
-import { map, catchError, switchMap, tap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
 import { AuthService } from '../services';
@@ -16,8 +16,9 @@ import {
   LogOut,
   SignInWithGoogle
 } from '../actions/auth.actions';
-import { UserService } from '../../shared/services';
 import { LoadUser } from '../actions/users.actions';
+import { UserService } from '../../shared/services';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable()
 export class AuthEffects {
@@ -31,7 +32,7 @@ export class AuthEffects {
           const firebaseUser = this.authService.user;
           return new SignInSuccess({ firebaseUser });
         }),
-        catchError(err => of(new SignInFailure(err)))
+        catchError(err => of(new SignInFailure({ error: err.message })))
       )
     )
   );
@@ -57,28 +58,25 @@ export class AuthEffects {
     switchMap(payload => {
       this.router.navigate(['']);
       return this.users.createUser$(this.authService.user).pipe(
-        map(() => EMPTY),
+        map(() => {
+          this.firebase.auth.currentUser
+            .getIdToken(true)
+            .then(token => localStorage.setItem('tokenId', token));
+          return EMPTY;
+        }),
         catchError(() => of(new LoadUser({ firebaseUid: payload.firebaseUser.uid })))
       );
     })
   );
 
-  // TODO: fix invalid action dispatching
   @Effect()
   logOut$ = this.actions$.pipe(
     ofType<LogOut>(ActionTypes.LogOut),
-    switchMap(() =>
-      this.authService.signOut$().pipe(
-        map(() => {
-          this.router.navigate(['']);
-          return EMPTY;
-        }),
-        catchError(err => {
-          console.error({ err });
-          return EMPTY;
-        })
-      )
-    )
+    switchMap(() => {
+      this.router.navigate(['']);
+      this.authService.signOut$().pipe(map(() => EMPTY));
+      return EMPTY;
+    })
   );
 
   @Effect()
@@ -106,6 +104,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private users: UserService,
+    private firebase: AngularFireAuth,
     private router: Router
   ) {}
 }

@@ -11,7 +11,7 @@ import * as fromState from '../../state';
   styleUrls: ['./sign-in.component.sass']
 })
 export class SignInComponent implements OnInit, OnDestroy {
-  credentials: SignInCredentials = { email: null, password: null };
+  credentials: SignInCredentials = { email: '', password: '' };
   error$ = this.store.select(fromState.selectSignInPageError);
 
   constructor(private store: Store<fromState.State>) {}

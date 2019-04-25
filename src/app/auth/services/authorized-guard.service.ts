@@ -10,7 +10,7 @@ import { State, selectAuthUser } from '../state';
 export class AuthorizedGuardService implements CanActivate {
   constructor(private store: Store<State>, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(): Observable<boolean> {
     return this.store.select(selectAuthUser).pipe(
       map(user => {
         const isAuthenticated = !!user;
