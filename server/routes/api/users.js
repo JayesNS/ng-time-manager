@@ -1,40 +1,42 @@
+'use strict';
+
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
-const Types = mongoose.Types;
-const Schema = mongoose.Schema;
-const Activity = require('../../models/activity');
 const User = require('../../models/user');
+const helpers = require('../../helpers');
 
+// Add new user
 router.post('/', (req, res) => {
-  const user = new User({ firebaseUid: req.body.uid });
-  user
+  const { firebaseUid } = helpers.fetchParams(req.body, ['firebaseUid']);
+  const newUser = new User({ firebaseUid });
+  newUser
     .save()
     .then(() => res.send(''))
     .catch(error => {
-      res.status(503).json(error);
+      helpers.handleError(error, res, 503);
     });
 });
 
+// Get all users
 router.get('/', (req, res) => {
   User.find()
     .then(users => {
       res.json(users);
     })
     .catch(err => {
-      console.error({ err });
-      res.status(503).json(err);
+      helpers.handleError(err, res, 503);
     });
 });
 
+// Get user by firebaseUid
 router.get('/:firebaseUid', (req, res) => {
-  const firebaseUid = req.params.firebaseUid;
+  const { firebaseUid } = helpers.fetchParams(req.params, ['firebaseUid']);
   User.findOne({ firebaseUid })
     .then(user => {
       res.json(user);
     })
     .catch(err => {
-      res.status(503).json(err);
+      helpers.handleError(err, res, 503);
     });
 });
 
