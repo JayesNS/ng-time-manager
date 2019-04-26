@@ -17,8 +17,8 @@ export const selectActivities = createSelector(
 );
 export const selectTodaysActivities = createSelector(
   selectActivities,
-  (activites: Activity[]) =>
-    activites.filter(
+  (activities: Activity[]) =>
+    activities.filter(
       activity =>
         new Date(activity.startingAt).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
     )

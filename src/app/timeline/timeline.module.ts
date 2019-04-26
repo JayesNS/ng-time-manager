@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 
 import {
@@ -13,8 +13,9 @@ import {
 } from './components';
 import { TimelineViewComponent } from './containers';
 import { reducers } from './state';
-import { TimelineEffects } from './effects/timeline.effects';
+import { ActivitiesEffects } from './effects/activities.effects';
 import { TimelineRoutingModule } from './timeline-routing.module';
+import { ActivityEditorComponent } from './components/activity-editor/activity-editor.component';
 
 @NgModule({
   declarations: [
@@ -22,14 +23,16 @@ import { TimelineRoutingModule } from './timeline-routing.module';
     TimelineLegendComponent,
     TimelineViewComponent,
     ActivitiesTimelineComponent,
-    TimelineComponent
+    TimelineComponent,
+    ActivityEditorComponent
   ],
   imports: [
     RouterModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     StoreModule.forFeature('timeline', reducers),
-    EffectsModule.forFeature([TimelineEffects]),
+    EffectsModule.forFeature([ActivitiesEffects]),
     TimelineRoutingModule
   ]
 })

@@ -14,7 +14,7 @@ import { SignInSuccess, RestoreSession } from './auth/actions/auth.actions';
 export class AppComponent {
   isUserAuthenticated$: Observable<boolean>;
   constructor(private store: Store<{}>, private firebase: AngularFireAuth) {
-    this.isUserAuthenticated$ = this.store.select(selectAuthUser).pipe(map(user => !!user));
-    this.store.dispatch(new RestoreSession({ firebaseUser: this.firebase.auth.currentUser }));
+    this.isUserAuthenticated$ = this.firebase.user.pipe(map(user => !!user));
+    this.store.dispatch(new RestoreSession());
   }
 }

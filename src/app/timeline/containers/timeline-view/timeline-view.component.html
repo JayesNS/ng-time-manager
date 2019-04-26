@@ -1,4 +1,4 @@
-<button (click)="addActivity()">Add</button>
+<button>Add</button>
 <select [(ngModel)]="interval">
   <option *ngFor="let interval of intervals; first as first" [selected]="!!first">{{
     interval

@@ -37,15 +37,11 @@ export class ActivitiesEffects {
   addActivity$ = this.actions$.pipe(
     ofType<AddActivity>(ActionTypes.AddActivity),
     map(action => action.payload),
-    switchMap(payload => {
-      return this.activities
-        .addActivity$(payload.user, payload.activity)
-        .pipe(
-          map(
-            activity => new AddActivitySuccess({ activity: payload.activity }),
-            catchError(err => of(new AddActivityFailure({ error: err })))
-          )
-        );
-    })
+    switchMap(payload =>
+      this.activities.addActivity$(payload.user, payload.activity).pipe(
+        switchMap(activity => of(new AddActivitySuccess({ activity }))),
+        catchError(error => of(new AddActivityFailure({ error })))
+      )
+    )
   );
 }

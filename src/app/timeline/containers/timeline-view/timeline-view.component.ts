@@ -29,20 +29,11 @@ export class TimelineViewComponent implements OnDestroy {
     this.userSub = this.store.select(selectUsers).subscribe(users => {
       this.user = users.user;
       console.log(this.user);
-      this.store.dispatch(new LoadActivities({ user: this.user }));
+      if (this.user) {
+        this.store.dispatch(new LoadActivities({ user: this.user }));
+      }
     });
     this.activities$ = this.store.select(fromStore.selectTodaysActivities);
-  }
-
-  addActivity() {
-    // TODO: load from form
-    const activity: Activity = {
-      type: 'todo',
-      title: 'Coding',
-      startingAt: new Date(2019, 3, 25, 7, 45),
-      endingAt: new Date(2019, 3, 25, 9, 0)
-    };
-    this.store.dispatch(new AddActivity({ user: this.user, activity }));
   }
 
   ngOnDestroy(): void {

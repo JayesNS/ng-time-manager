@@ -42,8 +42,6 @@ export class LogOut implements Action {
 }
 export class RestoreSession implements Action {
   readonly type = ActionTypes.RestoreSession;
-
-  constructor(public payload: { firebaseUser: firebase.User }) {}
 }
 
 export class SignUp implements Action {

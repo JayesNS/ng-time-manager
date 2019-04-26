@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
 import { AuthService } from '../services';
@@ -20,6 +20,7 @@ import {
 import { LoadUser } from '../actions/users.actions';
 import { UserService } from '../../shared/services';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Action } from '@ngrx/store';
 
 @Injectable()
 export class AuthEffects {
@@ -69,14 +70,13 @@ export class AuthEffects {
   @Effect()
   restoreSession$ = this.actions$.pipe(
     ofType<RestoreSession>(ActionTypes.RestoreSession),
-    map(action => action.payload),
-    switchMap(payload =>
+    switchMap(() =>
       this.firebase.user.pipe(
-        map(user => {
-          if (!user) {
-            return EMPTY;
+        switchMap(user => {
+          if (user) {
+            return of(new LoadUser({ firebaseUid: user.uid }));
           }
-          return new LoadUser({ firebaseUid: user.uid });
+          return EMPTY;
         })
       )
     )
