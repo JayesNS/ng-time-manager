@@ -18,7 +18,9 @@ export const reducers: ActionReducerMap<State> = {
   users: fromUsers.reducer
 };
 
-export const selectUsers = (state: any) => state.auth.users;
+export const selectUsers = (state: any) => {
+  return state.auth.users;
+};
 
 export const selectAuth = (state: any) => state.auth.auth;
 export const selectAuthUser = createSelector(

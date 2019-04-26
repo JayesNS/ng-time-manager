@@ -8,6 +8,7 @@ import { LoadActivities, AddActivity } from '../../actions';
 import { User } from 'src/app/auth/models';
 import { ActivitiesService } from '../../services/activities.service';
 import { selectUsers } from 'src/app/auth/state';
+import * as fromUsers from 'src/app/auth/state/users.reducer';
 
 @Component({
   selector: 'app-timeline-view',
@@ -24,9 +25,10 @@ export class TimelineViewComponent implements OnDestroy {
   user: User;
   private userSub: Subscription;
 
-  constructor(private store: Store<any>, private activities: ActivitiesService) {
+  constructor(private store: Store<fromUsers.State>) {
     this.userSub = this.store.select(selectUsers).subscribe(users => {
       this.user = users.user;
+      console.log(this.user);
       this.store.dispatch(new LoadActivities({ user: this.user }));
     });
     this.activities$ = this.store.select(fromStore.selectTodaysActivities);

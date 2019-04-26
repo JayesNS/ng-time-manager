@@ -14,7 +14,8 @@ import {
   SignUpSuccess,
   SignUpFailure,
   LogOut,
-  SignInWithGoogle
+  SignInWithGoogle,
+  RestoreSession
 } from '../actions/auth.actions';
 import { LoadUser } from '../actions/users.actions';
 import { UserService } from '../../shared/services';
@@ -30,6 +31,7 @@ export class AuthEffects {
       this.authService.signIn$(payload.credentials).pipe(
         map(() => {
           const firebaseUser = this.authService.user;
+          console.log({ firebaseUser });
           return new SignInSuccess({ firebaseUser });
         }),
         catchError(err => of(new SignInFailure({ error: err.message })))
@@ -57,16 +59,27 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload => {
       this.router.navigate(['']);
-      return this.users.createUser$(this.authService.user).pipe(
-        map(() => {
-          this.firebase.auth.currentUser
-            .getIdToken(true)
-            .then(token => localStorage.setItem('tokenId', token));
-          return EMPTY;
-        }),
+      return this.users.createUser$(payload.firebaseUser).pipe(
+        map(() => EMPTY),
         catchError(() => of(new LoadUser({ firebaseUid: payload.firebaseUser.uid })))
       );
     })
+  );
+
+  @Effect()
+  restoreSession$ = this.actions$.pipe(
+    ofType<RestoreSession>(ActionTypes.RestoreSession),
+    map(action => action.payload),
+    switchMap(payload =>
+      this.firebase.user.pipe(
+        map(user => {
+          if (!user) {
+            return EMPTY;
+          }
+          return new LoadUser({ firebaseUid: user.uid });
+        })
+      )
+    )
   );
 
   @Effect()

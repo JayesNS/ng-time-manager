@@ -1,1 +1,1 @@
-export * from './timeline.actions';
+export * from './activities.actions';

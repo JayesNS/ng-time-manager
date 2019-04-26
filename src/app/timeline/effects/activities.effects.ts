@@ -15,21 +15,22 @@ import {
 import { ActivitiesService } from '../services/activities.service';
 
 @Injectable()
-export class TimelineEffects {
+export class ActivitiesEffects {
   constructor(private actions$: Actions, private activities: ActivitiesService) {}
 
   @Effect()
   loadActivities$ = this.actions$.pipe(
     ofType<LoadActivities>(ActionTypes.LoadActivities),
-    switchMap(action => {
-      return this.activities.loadActivities$(action.payload.user).pipe(
+    switchMap(action =>
+      this.activities.loadActivities$(action.payload.user).pipe(
         map(activities => new LoadActivitiesSuccess({ activities })),
         catchError(err => {
           console.error({ err });
           return of(new LoadActivitiesFailure({ err }));
         })
-      );
-    })
+      )
+    ),
+    catchError(() => EMPTY)
   );
 
   @Effect()

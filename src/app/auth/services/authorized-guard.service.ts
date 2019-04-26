@@ -1,25 +1,21 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { State, selectAuthUser } from '../state';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { CanActivate, Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizedGuardService implements CanActivate {
-  constructor(private store: Store<State>, private router: Router) {}
+  constructor(private auth: AngularFireAuth, private router: Router) {}
 
   canActivate(): Observable<boolean> {
-    return this.store.select(selectAuthUser).pipe(
+    return this.auth.user.pipe(
       map(user => {
-        const isAuthenticated = !!user;
-
-        if (!isAuthenticated) {
+        if (!user) {
           this.router.navigate(['']);
         }
-
-        return isAuthenticated;
+        return !!user;
       })
     );
   }

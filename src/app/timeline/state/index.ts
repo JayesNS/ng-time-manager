@@ -1,4 +1,4 @@
-import * as fromTimeline from './timeline.reducer';
+import * as fromTimeline from './activities.reducer';
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 import { Activity } from '../models';
 

@@ -8,6 +8,7 @@ export enum ActionTypes {
   SignInFailure = '[Auth API] Sign in failure',
 
   LogOut = '[Auth] Log out',
+  RestoreSession = '[Auth] Restore session',
 
   SignUp = '[Sign Up Page] Sign up',
   SignUpSuccess = '[Auth API] Sign up success',
@@ -39,6 +40,11 @@ export class SignInFailure implements Action {
 export class LogOut implements Action {
   readonly type = ActionTypes.LogOut;
 }
+export class RestoreSession implements Action {
+  readonly type = ActionTypes.RestoreSession;
+
+  constructor(public payload: { firebaseUser: firebase.User }) {}
+}
 
 export class SignUp implements Action {
   readonly type = ActionTypes.SignUp;
@@ -62,6 +68,7 @@ export type AuthActions =
   | SignInSuccess
   | SignInFailure
   | LogOut
+  | RestoreSession
   | SignUp
   | SignUpSuccess
   | SignUpFailure;
