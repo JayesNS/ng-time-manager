@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectAuthUser } from './auth/state';
-import { map } from 'rxjs/operators';
+import { selectIsLoggedIn } from './auth/state';
 import { Observable } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { SignInSuccess, RestoreSession } from './auth/actions/auth.actions';
+import { RestoreSession } from './auth/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +11,8 @@ import { SignInSuccess, RestoreSession } from './auth/actions/auth.actions';
 })
 export class AppComponent {
   isUserAuthenticated$: Observable<boolean>;
-  constructor(private store: Store<{}>, private firebase: AngularFireAuth) {
-    this.isUserAuthenticated$ = this.firebase.user.pipe(map(user => !!user));
+  constructor(private store: Store<{}>) {
+    this.isUserAuthenticated$ = this.store.select(selectIsLoggedIn);
     this.store.dispatch(new RestoreSession());
   }
 }

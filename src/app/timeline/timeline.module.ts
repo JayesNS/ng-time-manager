@@ -5,35 +5,36 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 
+import { TimelineRoutingModule } from './timeline-routing.module';
 import {
-  ActivityComponent,
   TimelineLegendComponent,
   ActivitiesTimelineComponent,
-  TimelineComponent
+  TimelineComponent,
+  ActivityEditorComponent,
+  ActivityComponent
 } from './components';
 import { TimelineViewComponent } from './containers';
-import { reducers } from './state';
-import { ActivitiesEffects } from './effects/activities.effects';
-import { TimelineRoutingModule } from './timeline-routing.module';
-import { ActivityEditorComponent } from './components/activity-editor/activity-editor.component';
+import * as fromState from './state';
+import * as fromEffects from './effects';
 
 @NgModule({
   declarations: [
-    ActivityComponent,
     TimelineLegendComponent,
     TimelineViewComponent,
     ActivitiesTimelineComponent,
     TimelineComponent,
-    ActivityEditorComponent
+    ActivityEditorComponent,
+    ActivityComponent
   ],
   imports: [
     RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forFeature('timeline', reducers),
-    EffectsModule.forFeature([ActivitiesEffects]),
+    StoreModule.forFeature('timeline', fromState.reducers),
+    EffectsModule.forFeature([fromEffects.ActivitiesEffects]),
     TimelineRoutingModule
-  ]
+  ],
+  entryComponents: [ActivityComponent]
 })
 export class TimelineModule {}

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { SignInCredentials } from '../../models';
+import { SignInCredentials } from '../../../models';
 import { SignIn, SignInWithGoogle } from '../../actions/auth.actions';
 import * as fromState from '../../state';
 

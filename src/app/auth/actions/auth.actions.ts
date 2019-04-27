@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { SignInCredentials, SignUpCredentials } from '../models';
+import { SignInCredentials, SignUpCredentials, User } from '../../models';
 
 export enum ActionTypes {
   SignIn = '[Sign In Page] Sign in',
@@ -12,7 +12,29 @@ export enum ActionTypes {
 
   SignUp = '[Sign Up Page] Sign up',
   SignUpSuccess = '[Auth API] Sign up success',
-  SignUpFailure = '[Auth API] Sign up failure'
+  SignUpFailure = '[Auth API] Sign up failure',
+
+  LoadUser = '[User] Load user',
+  LoadUserSuccess = '[User API] Load user success',
+  LoadUserFailure = '[User API] Load user failure'
+}
+
+export class LoadUser implements Action {
+  readonly type = ActionTypes.LoadUser;
+
+  constructor(public payload: { firebaseUid: string }) {}
+}
+
+export class LoadUserSuccess implements Action {
+  readonly type = ActionTypes.LoadUserSuccess;
+
+  constructor(public payload: { user: User }) {}
+}
+
+export class LoadUserFailure implements Action {
+  readonly type = ActionTypes.LoadUserFailure;
+
+  constructor(public payload: { error: string }) {}
 }
 
 export class SignIn implements Action {
@@ -69,4 +91,7 @@ export type AuthActions =
   | RestoreSession
   | SignUp
   | SignUpSuccess
-  | SignUpFailure;
+  | SignUpFailure
+  | LoadUser
+  | LoadUserSuccess
+  | LoadUserFailure;

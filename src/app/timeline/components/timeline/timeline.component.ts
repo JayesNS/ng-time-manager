@@ -8,8 +8,7 @@ import {
   Input,
   OnInit
 } from '@angular/core';
-
-import { Activity } from '../../models';
+import { Activity } from 'src/app/models';
 
 @Component({
   selector: 'app-timeline',

@@ -1,4 +1,4 @@
-import { Activity } from 'src/app/timeline/models';
+import { Activity } from './activity.model';
 
 export interface User {
   _id: string;

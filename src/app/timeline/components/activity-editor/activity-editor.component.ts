@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AddActivity } from '../../actions';
 import { Subscription } from 'rxjs';
-import { selectUsers } from 'src/app/auth/state';
-import { map } from 'rxjs/operators';
-import { User } from 'src/app/auth/models';
-import { Activity } from '../../models';
+
+import { AddActivity } from '../../actions';
+import { User, Activity } from 'src/app/models';
+import { selectAuthUser } from 'src/app/auth/state';
 
 @Component({
   selector: 'app-activity-editor',
@@ -31,7 +30,7 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
   });
 
   constructor(private store: Store<any>) {
-    const user$ = this.store.select(selectUsers).pipe(map<any, User>(state => state.user));
+    const user$ = this.store.select(selectAuthUser);
     this.userSub = user$.subscribe(user => (this.user = user));
   }
 

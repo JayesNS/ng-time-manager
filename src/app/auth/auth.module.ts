@@ -9,7 +9,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { SignInComponent, SignUpComponent } from './containers';
 import { LogOutComponent } from './components';
 import { reducers } from './state';
-import { AuthEffects, UsersEffects } from './effects';
+import { AuthEffects } from './effects';
 
 @NgModule({
   declarations: [SignInComponent, SignUpComponent, LogOutComponent],
@@ -19,7 +19,7 @@ import { AuthEffects, UsersEffects } from './effects';
     AuthRoutingModule,
     FormsModule,
     StoreModule.forFeature('auth', reducers),
-    EffectsModule.forFeature([AuthEffects, UsersEffects])
+    EffectsModule.forFeature([AuthEffects])
   ],
   exports: [SignInComponent, SignUpComponent, LogOutComponent]
 })

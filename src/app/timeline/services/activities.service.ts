@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TimelineModule } from '../timeline.module';
-import { User } from 'src/app/auth/models';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Activity } from '../models';
+
+import { User, Activity } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root'

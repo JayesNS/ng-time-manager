@@ -10,7 +10,8 @@ import {
 const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: './auth/auth.module#AuthModule'
+    loadChildren: './auth/auth.module#AuthModule',
+    canActivate: [NotAuthorizedGuard]
   },
   {
     path: 'timeline',

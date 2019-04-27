@@ -2,13 +2,11 @@ import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
-import { Activity } from '../../models';
 import * as fromStore from '../../state';
-import { LoadActivities, AddActivity } from '../../actions';
-import { User } from 'src/app/auth/models';
-import { ActivitiesService } from '../../services/activities.service';
-import { selectUsers } from 'src/app/auth/state';
-import * as fromUsers from 'src/app/auth/state/users.reducer';
+import { LoadActivities } from '../../actions';
+import { User, Activity } from 'src/app/models';
+import * as fromAuth from '../../../auth/state';
+import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timeline-view',
@@ -20,20 +18,25 @@ export class TimelineViewComponent implements OnDestroy {
 
   interval = 60;
   segmentHeight = 100;
+  date: Date = new Date();
 
   activities$: Observable<Activity[]>;
   user: User;
   private userSub: Subscription;
 
-  constructor(private store: Store<fromUsers.State>) {
-    this.userSub = this.store.select(selectUsers).subscribe(users => {
-      this.user = users.user;
-      console.log(this.user);
+  constructor(private store: Store<fromAuth.State>) {
+    this.userSub = this.store.select(fromAuth.selectAuthUser).subscribe(user => {
+      this.user = user;
       if (this.user) {
         this.store.dispatch(new LoadActivities({ user: this.user }));
       }
     });
-    this.activities$ = this.store.select(fromStore.selectTodaysActivities);
+    this.activities$ = this.store.select(fromStore.selectActivitiesForDate, { date: this.date });
+  }
+
+  onDateChange() {
+    console.log('chnage');
+    this.activities$ = this.store.select(fromStore.selectActivitiesForDate, { date: this.date });
   }
 
   ngOnDestroy(): void {

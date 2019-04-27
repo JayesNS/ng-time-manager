@@ -24,13 +24,9 @@ export class ActivitiesEffects {
     switchMap(action =>
       this.activities.loadActivities$(action.payload.user).pipe(
         map(activities => new LoadActivitiesSuccess({ activities })),
-        catchError(err => {
-          console.error({ err });
-          return of(new LoadActivitiesFailure({ err }));
-        })
+        catchError(error => of(new LoadActivitiesFailure({ error })))
       )
-    ),
-    catchError(() => EMPTY)
+    )
   );
 
   @Effect()

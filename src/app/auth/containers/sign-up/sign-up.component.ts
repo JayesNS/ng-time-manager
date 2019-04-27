@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { SignUp } from '../../actions/auth.actions';
-import { SignUpCredentials } from '../../models';
+import { SignUpCredentials } from '../../../models';
 import { State, selectSignUpPageError } from '../../state';
 
 @Component({

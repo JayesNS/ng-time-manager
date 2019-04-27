@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { State, selectIsLoggedIn } from '../../state';
+import { State, selectIsLoggedIn, selectAuthUser } from '../../state';
 import { LogOut } from '../../actions/auth.actions';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-log-out',
@@ -12,9 +13,11 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./log-out.component.sass']
 })
 export class LogOutComponent implements OnInit {
-  isAuthenticated$ = this.firebase.user.pipe(map(user => !!user));
+  isLoggedIn$: Observable<boolean>;
 
-  constructor(private store: Store<State>, private firebase: AngularFireAuth) {}
+  constructor(private store: Store<State>) {
+    this.isLoggedIn$ = this.store.select(selectIsLoggedIn);
+  }
 
   ngOnInit() {}
 

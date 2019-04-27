@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TimelineViewComponent } from './containers';
-import { ActivityEditorComponent } from './components/activity-editor/activity-editor.component';
+import { ActivityEditorComponent } from './components';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'day' },

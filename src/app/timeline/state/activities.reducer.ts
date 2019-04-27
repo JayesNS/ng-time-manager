@@ -1,5 +1,5 @@
-import { Activity } from '../models';
 import { TimelineActions, ActionTypes } from '../actions';
+import { Activity } from 'src/app/models';
 
 export interface State {
   activities: Activity[];

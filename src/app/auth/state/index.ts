@@ -1,38 +1,40 @@
 import * as fromAuth from './auth.reducer';
 import * as fromSignIn from './sign-in.reducer';
 import * as fromSignUp from './sign-up.reducer';
-import * as fromUsers from './users.reducer';
-import { ActionReducerMap, createSelector } from '@ngrx/store';
+import { ActionReducerMap, createSelector, createFeatureSelector } from '@ngrx/store';
+import { User } from '../../models';
 
 export interface State {
   auth: fromAuth.State;
   signInPage: fromSignIn.State;
   signUpPage: fromSignUp.State;
-  users: fromUsers.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   auth: fromAuth.reducer,
   signInPage: fromSignIn.reducer,
-  signUpPage: fromSignUp.reducer,
-  users: fromUsers.reducer
+  signUpPage: fromSignUp.reducer
 };
 
-export const selectUsers = (state: any) => {
-  return state.auth.users;
-};
+export const select = createFeatureSelector('auth');
 
-export const selectAuth = (state: any) => state.auth.auth;
+export const selectAuth = createSelector(
+  select,
+  (state: State) => state.auth
+);
 export const selectAuthUser = createSelector(
   selectAuth,
   fromAuth.selectUser
 );
 export const selectIsLoggedIn = createSelector(
-  selectAuth,
-  (state: fromAuth.State) => !!state.firebaseUser
+  selectAuthUser,
+  (user: User) => !!user
 );
 
-export const selectSignInPage = (state: any) => state.auth.signInPage;
+export const selectSignInPage = createSelector(
+  select,
+  (state: State) => state.signInPage
+);
 export const selectSignInPageError = createSelector(
   selectSignInPage,
   fromSignIn.selectError
@@ -42,7 +44,10 @@ export const selectSignInPagePending = createSelector(
   fromSignIn.selectPending
 );
 
-export const selectSignUpPage = (state: any) => state.auth.signUpPage;
+export const selectSignUpPage = createSelector(
+  select,
+  (state: State) => state.signUpPage
+);
 export const selectSignUpPageError = createSelector(
   selectSignUpPage,
   fromSignUp.selectError

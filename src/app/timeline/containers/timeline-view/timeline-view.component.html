@@ -5,6 +5,8 @@
   }}</option>
 </select>
 <input type="number" [(ngModel)]="segmentHeight" />
+<input type="date" [(ngModel)]="date" (change)="onDateChange()" />
+{{ date | date }}
 <app-timeline
   [activities]="activities$ | async"
   [interval]="interval"

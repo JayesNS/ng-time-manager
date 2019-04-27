@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
-import { map, catchError, switchMap, tap } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
-import { AuthService } from '../services';
 import {
   ActionTypes,
   SignInSuccess,
@@ -15,12 +14,12 @@ import {
   SignUpFailure,
   LogOut,
   SignInWithGoogle,
-  RestoreSession
+  RestoreSession,
+  LoadUser,
+  LoadUserSuccess
 } from '../actions/auth.actions';
-import { LoadUser } from '../actions/users.actions';
+import { AuthService } from '../services';
 import { UserService } from '../../shared/services';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Action } from '@ngrx/store';
 
 @Injectable()
 export class AuthEffects {
@@ -30,11 +29,11 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.authService.signIn$(payload.credentials).pipe(
-        map(() => {
-          const firebaseUser = this.authService.user;
-          console.log({ firebaseUser });
-          return new SignInSuccess({ firebaseUser });
-        }),
+        switchMap(() =>
+          this.authService.user$.pipe(
+            switchMap(user => of(new SignInSuccess({ firebaseUser: user })))
+          )
+        ),
         catchError(err => of(new SignInFailure({ error: err.message })))
       )
     )
@@ -45,10 +44,14 @@ export class AuthEffects {
     ofType<SignInWithGoogle>(ActionTypes.SignInWithGoogle),
     switchMap(() =>
       this.authService.signInWithGoogle$().pipe(
-        map(() => {
-          const firebaseUser = this.authService.user;
-          return new SignInSuccess({ firebaseUser });
-        }),
+        switchMap(() =>
+          this.authService.user$.pipe(
+            switchMap(user => {
+              this.router.navigate(['']);
+              return of(new SignInSuccess({ firebaseUser: user }));
+            })
+          )
+        ),
         catchError(err => of(new SignInFailure({ error: err.message })))
       )
     )
@@ -58,20 +61,22 @@ export class AuthEffects {
   successfulSignIn$ = this.actions$.pipe(
     ofType<SignInSuccess>(ActionTypes.SignInSuccess),
     map(action => action.payload),
-    switchMap(payload => {
-      this.router.navigate(['']);
-      return this.users.createUser$(payload.firebaseUser).pipe(
-        map(() => EMPTY),
+    switchMap(payload =>
+      this.users.createUser$(payload.firebaseUser).pipe(
+        switchMap(() => {
+          this.router.navigate(['']);
+          return EMPTY;
+        }),
         catchError(() => of(new LoadUser({ firebaseUid: payload.firebaseUser.uid })))
-      );
-    })
+      )
+    )
   );
 
   @Effect()
   restoreSession$ = this.actions$.pipe(
     ofType<RestoreSession>(ActionTypes.RestoreSession),
     switchMap(() =>
-      this.firebase.user.pipe(
+      this.authService.user$.pipe(
         switchMap(user => {
           if (user) {
             return of(new LoadUser({ firebaseUid: user.uid }));
@@ -85,11 +90,14 @@ export class AuthEffects {
   @Effect()
   logOut$ = this.actions$.pipe(
     ofType<LogOut>(ActionTypes.LogOut),
-    switchMap(() => {
-      this.router.navigate(['']);
-      this.authService.signOut$().pipe(map(() => EMPTY));
-      return EMPTY;
-    })
+    switchMap(() =>
+      this.authService.signOut$().pipe(
+        switchMap(() => {
+          this.router.navigate(['']);
+          return EMPTY;
+        })
+      )
+    )
   );
 
   @Effect()
@@ -98,7 +106,7 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.authService.signUp$(payload.credentials).pipe(
-        map(() => new SignUpSuccess()),
+        switchMap(() => of(new SignUpSuccess())),
         catchError(err => of(new SignUpFailure({ error: err.message })))
       )
     )
@@ -113,11 +121,22 @@ export class AuthEffects {
     })
   );
 
+  @Effect()
+  loadUser$ = this.actions$.pipe(
+    ofType<LoadUser>(ActionTypes.LoadUser),
+    map(action => action.payload),
+    switchMap(payload =>
+      this.users.getUser$(payload.firebaseUid).pipe(
+        map(user => new LoadUserSuccess({ user })),
+        catchError(err => EMPTY)
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private users: UserService,
-    private firebase: AngularFireAuth,
     private router: Router
   ) {}
 }

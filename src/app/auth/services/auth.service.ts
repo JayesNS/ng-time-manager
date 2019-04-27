@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { Observable, from, of } from 'rxjs';
 
-import { SignInCredentials, SignUpCredentials } from '../models';
+import { SignInCredentials, SignUpCredentials } from '../../models';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class AuthService {
     return from(this.firebase.auth.signOut());
   }
 
-  get user(): firebase.User {
-    return this.firebase.auth.currentUser;
+  get user$(): Observable<firebase.User> {
+    return this.firebase.user;
   }
 }

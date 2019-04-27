@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-import { User } from 'src/app/auth/models';
-import { Activity } from '../models';
+import { User, Activity } from 'src/app/models';
 
 export enum ActionTypes {
   LoadActivities = '[Timeline Page] Load activities',
@@ -27,7 +26,7 @@ export class LoadActivitiesSuccess implements Action {
 export class LoadActivitiesFailure implements Action {
   readonly type = ActionTypes.LoadActivitiesFailure;
 
-  constructor(public payload: { err: string }) {}
+  constructor(public payload: { error: string }) {}
 }
 
 export class AddActivity implements Action {
