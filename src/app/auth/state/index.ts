@@ -28,7 +28,10 @@ export const selectAuthUser = createSelector(
 );
 export const selectIsLoggedIn = createSelector(
   selectAuthUser,
-  (user: User) => !!user
+  (user: User) => {
+    console.log({ user });
+    return !!user;
+  }
 );
 
 export const selectSignInPage = createSelector(

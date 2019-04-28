@@ -35,7 +35,6 @@ export class TimelineViewComponent implements OnDestroy {
   }
 
   onDateChange() {
-    console.log('chnage');
     this.activities$ = this.store.select(fromStore.selectActivitiesForDate, { date: this.date });
   }
 

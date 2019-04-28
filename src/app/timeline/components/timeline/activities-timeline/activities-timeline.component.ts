@@ -4,13 +4,13 @@ import {
   Input,
   OnChanges,
   ComponentFactoryResolver,
-  ElementRef,
   ViewContainerRef,
   ViewChild
 } from '@angular/core';
 
 import { Activity } from 'src/app/models';
-import { ActivityComponent } from '../activity/activity.component';
+import { ActivityComponent } from '../../activities/activity/activity.component';
+import { SimpleActivityComponent, TodoActivityComponent } from '../../activities';
 
 @Component({
   selector: 'app-activities-timeline',
@@ -31,11 +31,11 @@ export class ActivitiesTimelineComponent implements OnInit, OnChanges {
   }
 
   updateActivities() {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(ActivityComponent);
-
     this.container.clear();
 
     this.activities.forEach(activity => {
+      const type = activity.type === 'todo' ? TodoActivityComponent : SimpleActivityComponent;
+      const factory = this.componentFactoryResolver.resolveComponentFactory(type);
       const componentRef = this.container.createComponent(factory);
       (<ActivityComponent>componentRef.instance).activity = activity;
       (<ActivityComponent>componentRef.instance).pixelsToMinutesRatio =

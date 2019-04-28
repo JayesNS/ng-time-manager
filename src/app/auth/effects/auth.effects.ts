@@ -20,6 +20,7 @@ import {
 } from '../actions/auth.actions';
 import { AuthService } from '../services';
 import { UserService } from '../../shared/services';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable()
 export class AuthEffects {
@@ -45,9 +46,10 @@ export class AuthEffects {
     switchMap(() =>
       this.authService.signInWithGoogle$().pipe(
         switchMap(() =>
-          this.authService.user$.pipe(
+          this.firebase.user.pipe(
             switchMap(user => {
               this.router.navigate(['']);
+              console.log({ user });
               return of(new SignInSuccess({ firebaseUser: user }));
             })
           )
@@ -67,7 +69,9 @@ export class AuthEffects {
           this.router.navigate(['']);
           return EMPTY;
         }),
-        catchError(() => of(new LoadUser({ firebaseUid: payload.firebaseUser.uid })))
+        catchError(err => {
+          return of(new LoadUser({ firebaseUid: payload.firebaseUser.uid }));
+        })
       )
     )
   );
@@ -77,11 +81,11 @@ export class AuthEffects {
     ofType<RestoreSession>(ActionTypes.RestoreSession),
     switchMap(() =>
       this.authService.user$.pipe(
-        switchMap(user => {
+        map(user => {
           if (user) {
-            return of(new LoadUser({ firebaseUid: user.uid }));
+            return new LoadUser({ firebaseUid: user.uid });
           }
-          return EMPTY;
+          return new LogOut();
         })
       )
     )
@@ -127,7 +131,13 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.users.getUser$(payload.firebaseUid).pipe(
-        map(user => new LoadUserSuccess({ user })),
+        map(user => {
+          console.log({ user });
+          if (user) {
+            return new LoadUserSuccess({ user });
+          }
+          return new LogOut();
+        }),
         catchError(err => EMPTY)
       )
     )
@@ -137,6 +147,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private users: UserService,
-    private router: Router
+    private router: Router,
+    private firebase: AngularFireAuth
   ) {}
 }

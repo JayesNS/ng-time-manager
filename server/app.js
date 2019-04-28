@@ -6,7 +6,6 @@ const logger = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 const config = require('./config/database');
-const cors = require('cors');
 
 mongoose.Promise = require('bluebird');
 mongoose
@@ -21,7 +20,6 @@ mongoose
 
 const app = express();
 
-app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: 'false' }));

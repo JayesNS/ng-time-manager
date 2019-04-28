@@ -5,14 +5,18 @@ import { Observable } from 'rxjs';
 import { SignUp } from '../../actions/auth.actions';
 import { SignUpCredentials } from '../../../models';
 import { State, selectSignUpPageError } from '../../state';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.sass']
+  styleUrls: ['../sign-in/sign-in.component.sass']
 })
 export class SignUpComponent implements OnInit {
-  credentials: SignUpCredentials = { email: '', password: '' };
+  signUpForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
   error$: Observable<string>;
 
   constructor(private store: Store<State>) {
@@ -22,6 +26,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {}
 
   signUp(): void {
-    this.store.dispatch(new SignUp({ credentials: this.credentials }));
+    const credentials: SignUpCredentials = this.signUpForm.value;
+    this.store.dispatch(new SignUp({ credentials }));
   }
 }

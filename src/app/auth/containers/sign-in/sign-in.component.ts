@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { SignInCredentials } from '../../../models';
 import { SignIn, SignInWithGoogle } from '../../actions/auth.actions';
 import * as fromState from '../../state';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,7 +12,10 @@ import * as fromState from '../../state';
   styleUrls: ['./sign-in.component.sass']
 })
 export class SignInComponent implements OnInit, OnDestroy {
-  credentials: SignInCredentials = { email: '', password: '' };
+  signInForm = new FormGroup({
+    email: new FormControl('', [Validators.email, Validators.required]),
+    password: new FormControl('', [Validators.required])
+  });
   error$ = this.store.select(fromState.selectSignInPageError);
 
   constructor(private store: Store<fromState.State>) {}
@@ -19,7 +23,8 @@ export class SignInComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   signIn(): void {
-    this.store.dispatch(new SignIn({ credentials: this.credentials }));
+    const credentials: SignInCredentials = this.signInForm.value;
+    this.store.dispatch(new SignIn({ credentials }));
   }
 
   signInWithGoogle(): void {

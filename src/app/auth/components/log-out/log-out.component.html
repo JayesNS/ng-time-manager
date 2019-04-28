@@ -1,1 +1,3 @@
-<button *ngIf="isLoggedIn$ | async" (click)="logOut()">Log Out</button>
+<button mat-flat-button color="primary" *ngIf="isLoggedIn$ | async" (click)="logOut()">
+  Log Out
+</button>

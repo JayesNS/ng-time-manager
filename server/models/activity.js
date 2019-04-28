@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const activitySchema = Schema({
   type: {
     type: String,
-    enum: ['todo'],
+    enum: ['todo', 'simple'],
     required: true
   },
   title: {

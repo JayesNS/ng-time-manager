@@ -1,9 +1,13 @@
-<nav>
-  <a *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth">Sign In</a>
-  <a *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth/sign-up">Sign Up</a>
-  <a routerLink="home">Home</a>
-  <a *ngIf="(isUserAuthenticated$ | async)" routerLink="timeline">Timeline</a>
-  <app-log-out></app-log-out>
-</nav>
-
+<mat-toolbar color="accent">
+  <nav>
+    <div>
+      <a mat-button routerLink="home">Home</a>
+      <a mat-button *ngIf="isUserAuthenticated$ | async" routerLink="timeline">Timeline</a>
+    </div>
+    <div>
+      <a mat-button *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth">Sign In</a>
+      <app-log-out></app-log-out>
+    </div>
+  </nav>
+</mat-toolbar>
 <router-outlet></router-outlet>
