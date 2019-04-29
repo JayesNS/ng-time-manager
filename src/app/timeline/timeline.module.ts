@@ -20,6 +20,7 @@ import {
   TimelineComponent
 } from './components/timeline';
 import { ActivityEditorComponent } from './components';
+import { MaterialModule } from '../shared/material/material.module';
 
 @NgModule({
   declarations: [
@@ -39,8 +40,14 @@ import { ActivityEditorComponent } from './components';
     ReactiveFormsModule,
     StoreModule.forFeature('timeline', fromState.reducers),
     EffectsModule.forFeature([fromEffects.ActivitiesEffects]),
-    TimelineRoutingModule
+    TimelineRoutingModule,
+    MaterialModule
   ],
-  entryComponents: [SimpleActivityComponent, TodoActivityComponent]
+  entryComponents: [
+    ActivityEditorComponent,
+    ActivityComponent,
+    SimpleActivityComponent,
+    TodoActivityComponent
+  ]
 })
 export class TimelineModule {}

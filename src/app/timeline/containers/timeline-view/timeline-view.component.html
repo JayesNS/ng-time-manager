@@ -1,14 +1,32 @@
-<button>Add</button>
-<select [(ngModel)]="interval">
-  <option *ngFor="let interval of intervals; first as first" [selected]="!!first">{{
-    interval
-  }}</option>
-</select>
-<input type="number" [(ngModel)]="segmentHeight" />
-<input type="date" [(ngModel)]="date" (change)="onDateChange()" />
-{{ date | date }}
+<div class="controls">
+  <mat-form-field>
+    <mat-select [(value)]="interval" placeholder="Time interval (minutes)">
+      <mat-option *ngFor="let interval of intervals" [value]="interval">
+        {{ interval }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" [(ngModel)]="segmentHeight" placeholder="Segment height" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      placeholder="Choose a date"
+      [value]="date"
+      (dateChange)="onDateChange($event)"
+    />
+  </mat-form-field>
+</div>
 <app-timeline
+  class="timeline"
   [activities]="activities$ | async"
   [interval]="interval"
   [segmentHeight]="segmentHeight"
 ></app-timeline>
+<button class="open-editor" mat-fab color="primary" (click)="openEditor()">
+  <mat-icon>add</mat-icon>
+</button>

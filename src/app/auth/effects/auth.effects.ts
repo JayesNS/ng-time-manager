@@ -49,7 +49,6 @@ export class AuthEffects {
           this.firebase.user.pipe(
             switchMap(user => {
               this.router.navigate(['']);
-              console.log({ user });
               return of(new SignInSuccess({ firebaseUser: user }));
             })
           )

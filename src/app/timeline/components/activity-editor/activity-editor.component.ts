@@ -6,6 +6,11 @@ import { Subscription } from 'rxjs';
 import { AddActivity } from '../../actions';
 import { User, Activity } from 'src/app/models';
 import { selectAuthUser } from 'src/app/auth/state';
+import { MatDialogRef } from '@angular/material';
+import { DatePipe } from '@angular/common';
+
+import { DateTime, Duration } from 'luxon';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-activity-editor',
@@ -21,15 +26,20 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
     title: new FormControl('', Validators.required),
     startingAt: new FormGroup({
       date: new FormControl(new Date(), [Validators.required]),
-      time: new FormControl(new Date(), [Validators.required])
+      time: new FormControl(DateTime.local().toFormat('HH:mm'), [Validators.required])
     }),
     endingAt: new FormGroup({
       date: new FormControl(new Date(), [Validators.required]),
-      time: new FormControl(new Date(), [Validators.required])
+      time: new FormControl(
+        DateTime.local()
+          .plus({ minutes: 10 })
+          .toFormat('HH:mm'),
+        [Validators.required]
+      )
     })
   });
 
-  constructor(private store: Store<any>) {
+  constructor(public dialogRef: MatDialogRef<ActivityEditorComponent>, private store: Store<any>) {
     const user$ = this.store.select(selectAuthUser);
     this.userSub = user$.subscribe(user => (this.user = user));
   }
@@ -39,9 +49,12 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.user && this.activityForm.valid) {
       const activity: Activity = this.concatAllDates(this.activityForm.value);
-      console.log(JSON.parse(JSON.stringify(activity)));
       this.store.dispatch(new AddActivity({ user: this.user, activity }));
     }
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
   }
 
   private concatAllDates(object: object): any {
@@ -49,8 +62,10 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
     const result: any = {};
     for (let [k, v] of entries) {
       if (v.date && v.time) {
-        const { date, time } = v;
-        v = new Date(date + 'T' + time);
+        const { date, time }: { date: Date; time: string } = v;
+        const [hour, minute] = time.split(':').map(num => parseInt(num, 10));
+        const datetime = DateTime.fromMillis(date.getTime()).set({ hour, minute });
+        v = new Date(datetime.toMillis());
       }
       result[k] = v;
     }

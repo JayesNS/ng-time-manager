@@ -7,6 +7,10 @@ import { LoadActivities } from '../../actions';
 import { User, Activity } from 'src/app/models';
 import * as fromAuth from '../../../auth/state';
 import { tap, switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { MatDialog, MatDatepickerInputEvent } from '@angular/material';
+import { ActivityComponent } from '../../components/activities';
+import { ActivityEditorComponent } from '../../components';
 
 @Component({
   selector: 'app-timeline-view',
@@ -24,7 +28,7 @@ export class TimelineViewComponent implements OnDestroy {
   user: User;
   private userSub: Subscription;
 
-  constructor(private store: Store<fromAuth.State>) {
+  constructor(private store: Store<fromAuth.State>, private dialog: MatDialog) {
     this.userSub = this.store.select(fromAuth.selectAuthUser).subscribe(user => {
       this.user = user;
       if (this.user) {
@@ -34,8 +38,16 @@ export class TimelineViewComponent implements OnDestroy {
     this.activities$ = this.store.select(fromStore.selectActivitiesForDate, { date: this.date });
   }
 
-  onDateChange() {
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    this.date = event.value;
     this.activities$ = this.store.select(fromStore.selectActivitiesForDate, { date: this.date });
+  }
+
+  openEditor() {
+    let dialogRef = this.dialog.open(ActivityEditorComponent, {
+      height: '400px',
+      width: '600px'
+    });
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,77 @@
-<form action="javascript:void(0);" [formGroup]="activityForm" (submit)="onSubmit()">
+<h1 mat-dialog-title>Add new activity</h1>
+<div mat-dialog-content>
+  <form action="javascript:void(0);" [formGroup]="activityForm">
+    <mat-form-field>
+      <input matInput type="text" formControlName="type" placeholder="Type" required />
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="title" placeholder="Title" required />
+    </mat-form-field>
+    <div formGroupName="startingAt">
+      <mat-form-field>
+        <input
+          matInput
+          [ngxTimepicker]="startTimePicker"
+          [format]="24"
+          placeholder="Start time"
+          formControlName="time"
+          required
+        />
+        <ngx-material-timepicker #startTimePicker></ngx-material-timepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <input
+          matInput
+          [matDatepicker]="startDatePicker"
+          placeholder="Start date"
+          formControlName="date"
+        />
+      </mat-form-field>
+    </div>
+    <div formGroupName="endingAt">
+      <mat-form-field>
+        <input
+          matInput
+          [ngxTimepicker]="endTimePicker"
+          [format]="24"
+          placeholder="End time"
+          formControlName="time"
+          required
+        />
+        <ngx-material-timepicker #endTimePicker></ngx-material-timepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <input
+          matInput
+          [matDatepicker]="endDatePicker"
+          placeholder="End date"
+          formControlName="date"
+        />
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="onCancel()">Cancel</button>
+  <button
+    type="submit"
+    for="form"
+    mat-flat-button
+    (click)="onSubmit()"
+    mat-dialog-close
+    cdkFocusInitial
+    color="primary"
+    [disabled]="activityForm.invalid"
+  >
+    Save
+  </button>
+</div>
+
+<!-- <form action="javascript:void(0);" [formGroup]="activityForm" (submit)="onSubmit()">
   <div>
     <label>
       Type
@@ -27,3 +100,4 @@
   </div>
   <button type="submit">Zapisz</button>
 </form>
+ -->

@@ -1,6 +1,11 @@
 export interface Activity {
-  type: string;
+  type: ActivityType;
   title: string;
   startingAt: Date;
   endingAt: Date;
+}
+
+export enum ActivityType {
+  TODO = 'todo',
+  SIMPLE = 'simple'
 }

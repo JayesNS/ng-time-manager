@@ -15,19 +15,17 @@ import { Activity } from 'src/app/models';
   styleUrls: ['./activity.component.sass']
 })
 export class ActivityComponent implements OnChanges, OnInit {
-  @Input() activity: Activity;
+  @Input() activity: Activity | any;
   @Input() pixelsToMinutesRatio: number;
 
-  @ViewChild('container') container: ElementRef;
-
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, private elRef: ElementRef) {}
   ngOnInit() {
-    this.renderer.setStyle(this.container.nativeElement, 'top', this.startPosition + 'px');
-    this.renderer.setStyle(this.container.nativeElement, 'height', this.height + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'top', this.startPosition + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'height', this.height + 'px');
   }
   ngOnChanges() {
-    this.renderer.setStyle(this.container.nativeElement, 'top', this.startPosition + 'px');
-    this.renderer.setStyle(this.container.nativeElement, 'height', this.height + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'top', this.startPosition + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'height', this.height + 'px');
   }
 
   get startPosition() {
