@@ -80,12 +80,12 @@ export class AuthEffects {
   restoreSession$ = this.actions$.pipe(
     ofType<RestoreSession>(ActionTypes.RestoreSession),
     switchMap(() =>
-      this.authService.user$.pipe(
-        map(user => {
+      this.firebase.user.pipe(
+        switchMap(user => {
           if (user) {
-            return new LoadUser({ firebaseUid: user.uid });
+            return of(new LoadUser({ firebaseUid: user.uid }));
           }
-          return new LogOut();
+          return EMPTY;
         })
       )
     )
@@ -131,12 +131,11 @@ export class AuthEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.users.getUser$(payload.firebaseUid).pipe(
-        map(user => {
-          console.log({ user });
+        switchMap(user => {
           if (user) {
-            return new LoadUserSuccess({ user });
+            return of(new LoadUserSuccess({ user }));
           }
-          return new LogOut();
+          return EMPTY;
         }),
         catchError(err => EMPTY)
       )

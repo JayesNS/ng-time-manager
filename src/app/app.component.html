@@ -5,7 +5,9 @@
       <a mat-button *ngIf="isUserAuthenticated$ | async" routerLink="timeline">Timeline</a>
     </div>
     <div>
-      <a mat-button *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth">Sign In</a>
+      <a mat-flat-button color="primary" *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth"
+        >Sign In</a
+      >
       <app-log-out></app-log-out>
     </div>
   </nav>
