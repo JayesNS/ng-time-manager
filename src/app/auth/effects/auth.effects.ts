@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
 
 import {
@@ -16,7 +16,8 @@ import {
   SignInWithGoogle,
   RestoreSession,
   LoadUser,
-  LoadUserSuccess
+  LoadUserSuccess,
+  LoadUserFailure
 } from '../actions/auth.actions';
 import { AuthService } from '../services';
 import { UserService } from '../../shared/services';
@@ -59,35 +60,24 @@ export class AuthEffects {
   );
 
   @Effect()
-  successfulSignIn$ = this.actions$.pipe(
-    ofType<SignInSuccess>(ActionTypes.SignInSuccess),
-    map(action => action.payload),
-    switchMap(payload =>
-      this.users.createUser$(payload.firebaseUser).pipe(
-        switchMap(() => {
-          this.router.navigate(['']);
-          return EMPTY;
-        }),
-        catchError(err => {
-          return of(new LoadUser({ firebaseUid: payload.firebaseUser.uid }));
-        })
-      )
-    )
-  );
-
-  @Effect()
   restoreSession$ = this.actions$.pipe(
     ofType<RestoreSession>(ActionTypes.RestoreSession),
     switchMap(() =>
       this.firebase.user.pipe(
         switchMap(user => {
           if (user) {
-            return of(new LoadUser({ firebaseUid: user.uid }));
+            return of(new LoadUser({ firebaseUser: user }));
           }
           return EMPTY;
         })
       )
     )
+  );
+
+  @Effect()
+  loadUserFailure$ = this.actions$.pipe(
+    ofType<LoadUserFailure>(ActionTypes.LoadUserFailure),
+    map(() => new LogOut())
   );
 
   @Effect()
@@ -129,14 +119,14 @@ export class AuthEffects {
     ofType<LoadUser>(ActionTypes.LoadUser),
     map(action => action.payload),
     switchMap(payload =>
-      this.users.getUser$(payload.firebaseUid).pipe(
+      this.users.getUser$(payload.firebaseUser).pipe(
         switchMap(user => {
           if (user) {
             return of(new LoadUserSuccess({ user }));
           }
-          return EMPTY;
+          return of(new LoadUserFailure({ error: 'User not found' }));
         }),
-        catchError(err => EMPTY)
+        catchError(err => of(new LoadUserFailure({ error: err })))
       )
     )
   );

@@ -22,7 +22,7 @@ export enum ActionTypes {
 export class LoadUser implements Action {
   readonly type = ActionTypes.LoadUser;
 
-  constructor(public payload: { firebaseUid: string }) {}
+  constructor(public payload: { firebaseUser: firebase.User }) {}
 }
 
 export class LoadUserSuccess implements Action {

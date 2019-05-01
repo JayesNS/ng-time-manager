@@ -16,6 +16,10 @@ export function reducer(state: State = initialState, action: AuthActions): State
     case ActionTypes.LoadUserSuccess: {
       return { ...state, user: action.payload.user };
     }
+    case ActionTypes.LoadUserFailure: {
+      console.log({ payload: action.payload });
+      return initialState;
+    }
     case ActionTypes.SignInSuccess: {
       return { ...state, firebaseUser: action.payload.firebaseUser };
     }

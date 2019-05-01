@@ -15,9 +15,8 @@ router.post('/', (req, res) => {
       if (!user) {
         const newUser = new User({ firebaseUid });
         return newUser.save();
-      } else {
-        res.status(503);
       }
+      return user;
     })
     .then(user => res.json(user))
     .catch(error => {
