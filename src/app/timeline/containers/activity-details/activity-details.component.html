@@ -1,0 +1,10 @@
+<div class="container">
+  <h2 mat-dialog-title>{{ activity.title }}</h2>
+  <mat-dialog-content
+    >{{ activity.startingAt | date: 'HH:mm' }} -
+    {{ activity.endingAt | date: 'HH:mm' }}</mat-dialog-content
+  >
+  <mat-dialog-actions>
+    <!-- removing, editing and other manipulation on todo here -->
+  </mat-dialog-actions>
+</div>

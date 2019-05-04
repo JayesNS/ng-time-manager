@@ -5,9 +5,12 @@ import {
   Renderer2,
   ViewChild,
   ElementRef,
-  OnInit
+  OnInit,
+  HostListener
 } from '@angular/core';
 import { Activity } from 'src/app/models';
+import { MatDialog } from '@angular/material';
+import { ActivityDetailsComponent } from 'src/app/timeline/containers';
 
 @Component({
   selector: 'app-activity',
@@ -18,7 +21,20 @@ export class ActivityComponent implements OnChanges, OnInit {
   @Input() activity: Activity | any;
   @Input() pixelsToMinutesRatio: number;
 
-  constructor(private renderer: Renderer2, private elRef: ElementRef) {}
+  showControls = false;
+
+  @HostListener('mouseover') onMouseOver() {
+    this.showControls = true;
+  }
+  @HostListener('mouseleave') onmouseleave() {
+    this.showControls = false;
+  }
+
+  openDetails() {
+    this.dialog.open(ActivityDetailsComponent, { data: { activity: this.activity } });
+  }
+
+  constructor(private renderer: Renderer2, private elRef: ElementRef, private dialog: MatDialog) {}
   ngOnInit() {
     this.renderer.setStyle(this.elRef.nativeElement, 'top', this.startPosition + 'px');
     this.renderer.setStyle(this.elRef.nativeElement, 'height', this.height + 'px');

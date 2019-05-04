@@ -16,8 +16,8 @@ import { Activity } from 'src/app/models';
   styleUrls: ['./timeline.component.sass']
 })
 export class TimelineComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() interval = 60;
-  @Input() segmentHeight = 100;
+  @Input() interval;
+  @Input() segmentHeight;
   @Input() activities: Activity[];
 
   currentHour: number;
@@ -28,7 +28,7 @@ export class TimelineComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
-    setInterval(() => this.moveTimeIndicatorToNow(), 1000);
+    setInterval(() => this.moveTimeIndicatorToNow(), 0);
   }
 
   // FIXME: scrollToNow not working when segmentHeight changes

@@ -6,10 +6,7 @@ import * as fromStore from '../../state';
 import { LoadActivities } from '../../actions';
 import { User, Activity } from 'src/app/models';
 import * as fromAuth from '../../../auth/state';
-import { tap, switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { MatDialog, MatDatepickerInputEvent } from '@angular/material';
-import { ActivityComponent } from '../../components/activities';
 import { ActivityEditorComponent } from '../../components';
 
 @Component({
@@ -21,7 +18,7 @@ export class TimelineViewComponent implements OnDestroy {
   readonly intervals = [5, 10, 15, 20, 30, 60, 120, 180];
 
   interval = 60;
-  segmentHeight = 100;
+  segmentHeight = 200;
   date: Date = new Date();
 
   activities$: Observable<Activity[]>;
@@ -44,7 +41,7 @@ export class TimelineViewComponent implements OnDestroy {
   }
 
   openEditor() {
-    let dialogRef = this.dialog.open(ActivityEditorComponent, {
+    this.dialog.open(ActivityEditorComponent, {
       height: '400px',
       width: '600px'
     });

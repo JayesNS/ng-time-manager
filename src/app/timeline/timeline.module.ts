@@ -9,11 +9,7 @@ import { TimelineRoutingModule } from './timeline-routing.module';
 import { TimelineViewComponent } from './containers';
 import * as fromState from './state';
 import * as fromEffects from './effects';
-import {
-  ActivityComponent,
-  TodoActivityComponent,
-  SimpleActivityComponent
-} from './components/activities';
+import { ActivityComponent } from './components/activities';
 import {
   TimelineLegendComponent,
   ActivitiesTimelineComponent,
@@ -21,6 +17,7 @@ import {
 } from './components/timeline';
 import { ActivityEditorComponent } from './components';
 import { MaterialModule } from '../shared/material/material.module';
+import { ActivityDetailsComponent } from './containers/activity-details/activity-details.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +27,7 @@ import { MaterialModule } from '../shared/material/material.module';
     TimelineComponent,
     ActivityEditorComponent,
     ActivityComponent,
-    TodoActivityComponent,
-    SimpleActivityComponent
+    ActivityDetailsComponent
   ],
   imports: [
     RouterModule,
@@ -43,11 +39,6 @@ import { MaterialModule } from '../shared/material/material.module';
     TimelineRoutingModule,
     MaterialModule
   ],
-  entryComponents: [
-    ActivityEditorComponent,
-    ActivityComponent,
-    SimpleActivityComponent,
-    TodoActivityComponent
-  ]
+  entryComponents: [ActivityEditorComponent, ActivityComponent, ActivityDetailsComponent]
 })
 export class TimelineModule {}

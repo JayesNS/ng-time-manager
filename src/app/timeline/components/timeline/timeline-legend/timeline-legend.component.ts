@@ -16,10 +16,7 @@ export class TimelineLegendComponent implements OnInit, OnChanges {
 
   markings: Date[];
 
-  constructor(private elRef: ElementRef, private renderer: Renderer2) {
-    this.segmentHeight = 100;
-    this.interval = 30;
-  }
+  constructor(private elRef: ElementRef, private renderer: Renderer2) {}
 
   calcHour(marking: number): Date {
     const currentDate = new Date().setHours(0, 0, 0, 0);

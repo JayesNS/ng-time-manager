@@ -1,2 +1,16 @@
-<div>{{ activity.startingAt | date: 'HH:mm' }} - {{ activity.endingAt | date: 'HH:mm' }}</div>
-{{ activity.title }}
+<div class="time">
+  {{ activity.startingAt | date: 'HH:mm' }} - {{ activity.endingAt | date: 'HH:mm' }}
+</div>
+<div class="activity" (click)="openDetails()">
+  <header>
+    {{ activity.title }}
+  </header>
+  <!-- <hr /> -->
+</div>
+<div class="controls" (mouseleave)="showControls = false" [ngClass]="{ visible: showControls }">
+  <button mat-icon-button color="primary">
+    <mat-icon>delete</mat-icon></button
+  ><button mat-icon-button color="primary">
+    <mat-icon>edit</mat-icon>
+  </button>
+</div>
