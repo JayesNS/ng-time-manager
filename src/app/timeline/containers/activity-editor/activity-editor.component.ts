@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { OnInit, OnDestroy, Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -7,11 +7,8 @@ import { AddActivity } from '../../actions';
 import { User, Activity } from 'src/app/models';
 import { selectAuthUser } from 'src/app/auth/state';
 import { MatDialogRef } from '@angular/material';
-import { DatePipe } from '@angular/common';
 
 import { DateTime, Duration } from 'luxon';
-import { map } from 'rxjs/operators';
-
 @Component({
   selector: 'app-activity-editor',
   templateUrl: './activity-editor.component.html',

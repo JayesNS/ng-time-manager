@@ -11,6 +11,9 @@ import {
 import { Activity } from 'src/app/models';
 import { MatDialog } from '@angular/material';
 import { ActivityDetailsComponent } from 'src/app/timeline/containers';
+import { ActivitiesService } from 'src/app/timeline/services/activities.service';
+import { Store } from '@ngrx/store';
+import { RemoveActivity } from 'src/app/timeline/actions';
 
 @Component({
   selector: 'app-activity',
@@ -34,7 +37,12 @@ export class ActivityComponent implements OnChanges, OnInit {
     this.dialog.open(ActivityDetailsComponent, { data: { activity: this.activity } });
   }
 
-  constructor(private renderer: Renderer2, private elRef: ElementRef, private dialog: MatDialog) {}
+  constructor(
+    private renderer: Renderer2,
+    private store: Store<any>,
+    private elRef: ElementRef,
+    private dialog: MatDialog
+  ) {}
   ngOnInit() {
     this.renderer.setStyle(this.elRef.nativeElement, 'top', this.startPosition + 'px');
     this.renderer.setStyle(this.elRef.nativeElement, 'height', this.height + 'px');
@@ -57,5 +65,9 @@ export class ActivityComponent implements OnChanges, OnInit {
       new Date(this.activity.endingAt).getTime() - new Date(this.activity.startingAt).getTime();
     const lengthInMinutes = timeDifference / 1000 / 60;
     return Math.round(lengthInMinutes * this.pixelsToMinutesRatio);
+  }
+
+  removeActivity() {
+    this.store.dispatch(new RemoveActivity({ activity: this.activity }));
   }
 }

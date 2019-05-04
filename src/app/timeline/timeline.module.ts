@@ -6,7 +6,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 
 import { TimelineRoutingModule } from './timeline-routing.module';
-import { TimelineViewComponent } from './containers';
+import {
+  TimelineViewComponent,
+  ActivityEditorComponent,
+  ActivityDetailsComponent
+} from './containers';
 import * as fromState from './state';
 import * as fromEffects from './effects';
 import { ActivityComponent } from './components/activities';
@@ -15,9 +19,7 @@ import {
   ActivitiesTimelineComponent,
   TimelineComponent
 } from './components/timeline';
-import { ActivityEditorComponent } from './components';
 import { MaterialModule } from '../shared/material/material.module';
-import { ActivityDetailsComponent } from './containers/activity-details/activity-details.component';
 
 @NgModule({
   declarations: [

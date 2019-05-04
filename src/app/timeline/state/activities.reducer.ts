@@ -30,7 +30,17 @@ export function reducer(state: State = initialState, action: TimelineActions) {
       };
     }
     case ActionTypes.AddActivityFailure: {
-      return { ...state, loading: false };
+      return { ...state, pending: false };
+    }
+    case ActionTypes.RemoveActivitySuccess: {
+      const activityToRemove = action.payload.activity;
+      return {
+        ...state,
+        activities: state.activities.filter(activity => activity._id !== activityToRemove._id)
+      };
+    }
+    case ActionTypes.RemoveActivityFailure: {
+      return { ...state };
     }
     default: {
       return state;

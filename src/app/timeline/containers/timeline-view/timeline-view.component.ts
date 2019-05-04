@@ -7,7 +7,7 @@ import { LoadActivities } from '../../actions';
 import { User, Activity } from 'src/app/models';
 import * as fromAuth from '../../../auth/state';
 import { MatDialog, MatDatepickerInputEvent } from '@angular/material';
-import { ActivityEditorComponent } from '../../components';
+import { ActivityEditorComponent } from '../activity-editor/activity-editor.component';
 
 @Component({
   selector: 'app-timeline-view',

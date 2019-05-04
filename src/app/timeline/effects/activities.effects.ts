@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 
 import {
@@ -10,7 +10,10 @@ import {
   LoadActivitiesSuccess,
   LoadActivitiesFailure,
   AddActivitySuccess,
-  AddActivityFailure
+  AddActivityFailure,
+  RemoveActivity,
+  RemoveActivitySuccess,
+  RemoveActivityFailure
 } from '../actions';
 import { ActivitiesService } from '../services/activities.service';
 
@@ -35,11 +38,20 @@ export class ActivitiesEffects {
     map(action => action.payload),
     switchMap(payload =>
       this.activities.addActivity$(payload.user, payload.activity).pipe(
-        switchMap(activity => {
-          console.log({ activity });
-          return of(new AddActivitySuccess({ activity }));
-        }),
+        switchMap(activity => of(new AddActivitySuccess({ activity }))),
         catchError(error => of(new AddActivityFailure({ error })))
+      )
+    )
+  );
+
+  @Effect()
+  removeActivity$ = this.actions$.pipe(
+    ofType<RemoveActivity>(ActionTypes.RemoveActivity),
+    map(action => action.payload),
+    switchMap(payload =>
+      this.activities.removeActivity$(payload.activity).pipe(
+        switchMap(activity => of(new RemoveActivitySuccess({ activity }))),
+        catchError(error => of(new RemoveActivityFailure({ error })))
       )
     )
   );

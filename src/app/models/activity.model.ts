@@ -1,4 +1,5 @@
 export interface Activity {
+  _id: string;
   type: ActivityType;
   title: string;
   startingAt: Date;

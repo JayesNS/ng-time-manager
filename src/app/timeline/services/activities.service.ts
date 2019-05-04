@@ -17,4 +17,8 @@ export class ActivitiesService {
   addActivity$(user: User, activity: Activity): Observable<Activity> {
     return this.http.post<Activity>('api/activities', { uid: user._id, activity });
   }
+
+  removeActivity$(activity: Activity): Observable<Activity> {
+    return this.http.delete<Activity>(`api/activities/${activity._id}`);
+  }
 }

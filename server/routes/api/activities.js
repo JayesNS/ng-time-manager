@@ -35,4 +35,16 @@ router.get('/:uid', (req, res) => {
     .catch(err => helpers.handleError(err, res, 503));
 });
 
+// Deleting activity
+router.delete('/:id', (req, res) => {
+  const { id } = helpers.fetchParams(req.params, ['id']);
+
+  User.findOneAndUpdate({ activities: id }, { $pull: { activities: id } }, { new: true })
+    .then(() => Activity.findByIdAndDelete(id))
+    .then(activity => {
+      res.json(activity);
+    })
+    .catch(err => helpers.handleError(err, res, 503));
+});
+
 module.exports = router;
