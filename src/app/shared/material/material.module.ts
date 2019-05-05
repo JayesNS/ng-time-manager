@@ -9,7 +9,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatIconModule,
-  MatDialogModule
+  MatDialogModule,
+  MatAutocompleteModule
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
@@ -26,6 +27,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatDatepickerModule,
     MatIconModule,
     MatDialogModule,
+    MatAutocompleteModule,
     NgxMaterialTimepickerModule
   ]
 })

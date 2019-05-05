@@ -22,9 +22,11 @@ export class TimelineViewComponent implements OnDestroy {
   interval = Duration.fromObject({ minutes: 60 });
   zoom = 1;
   segmentHeight = 200;
+  category = '';
   date = DateTime.local();
 
   activities$: Observable<Activity[]>;
+  categories$: Observable<string[]>;
   private userSub: Subscription;
 
   constructor(private store: Store<fromAuth.State>, private dialog: MatDialog) {
@@ -33,9 +35,8 @@ export class TimelineViewComponent implements OnDestroy {
         this.store.dispatch(new LoadActivities({ user }));
       }
     });
-    this.activities$ = this.store.select(fromStore.selectActivitiesForDate, {
-      date: this.date.toJSDate()
-    });
+    this.categories$ = this.store.select(fromStore.selectCategories);
+    this.updateActivities();
   }
 
   changeInterval(event: MatSelectChange) {
@@ -44,10 +45,19 @@ export class TimelineViewComponent implements OnDestroy {
   changeZoom(event: MatSelectChange) {
     this.zoom = event.value;
   }
+  changeCategory(event: MatSelectChange) {
+    this.category = event.value;
+    this.updateActivities();
+  }
   changeDate(event: MatDatepickerInputEvent<Date>) {
     this.date = DateTime.fromJSDate(event.value);
-    this.activities$ = this.store.select(fromStore.selectActivitiesForDate, {
-      date: this.date.toJSDate()
+    this.updateActivities();
+  }
+
+  updateActivities() {
+    this.activities$ = this.store.select(fromStore.selectFilteredActivities, {
+      date: this.date.toJSDate(),
+      category: this.category
     });
   }
 

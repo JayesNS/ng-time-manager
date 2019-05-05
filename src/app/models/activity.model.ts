@@ -4,6 +4,8 @@ export interface Activity {
   title: string;
   startingAt: Date;
   endingAt: Date;
+  description?: string;
+  category?: string;
 }
 
 export enum ActivityType {

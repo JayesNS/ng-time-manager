@@ -3,7 +3,6 @@ import {
   Input,
   OnChanges,
   Renderer2,
-  ViewChild,
   ElementRef,
   OnInit,
   HostListener

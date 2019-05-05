@@ -13,6 +13,14 @@ const activitySchema = Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String,
+    required: false
+  },
+  category: {
+    type: String,
+    required: false
+  },
   startingAt: {
     type: Schema.Types.Date,
     required: true

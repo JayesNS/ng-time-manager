@@ -1,7 +1,7 @@
 import { OnInit, OnDestroy, Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { AddActivity } from '../../actions';
 import { User, Activity, ActivityType } from 'src/app/models';
@@ -9,6 +9,7 @@ import { selectAuthUser } from 'src/app/auth/state';
 import { MatDialogRef } from '@angular/material';
 
 import { DateTime } from 'luxon';
+import { selectCategories } from '../../state';
 @Component({
   selector: 'app-activity-editor',
   templateUrl: './activity-editor.component.html',
@@ -18,6 +19,7 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   user: User;
   activityTypes: string[] = Object.values(ActivityType);
+  categories$: Observable<String[]>;
 
   activityForm: FormGroup = new FormGroup({
     type: new FormControl('', Validators.required),
@@ -34,12 +36,15 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
           .toFormat('HH:mm'),
         [Validators.required]
       )
-    })
+    }),
+    category: new FormControl('')
   });
 
   constructor(public dialogRef: MatDialogRef<ActivityEditorComponent>, private store: Store<any>) {
     const user$ = this.store.select(selectAuthUser);
     this.userSub = user$.subscribe(user => (this.user = user));
+
+    this.categories$ = this.store.select(selectCategories);
   }
 
   ngOnInit() {}
