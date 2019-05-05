@@ -14,6 +14,7 @@ import { ActivityDetailsComponent } from 'src/app/timeline/containers';
 import { ActivitiesService } from 'src/app/timeline/services/activities.service';
 import { Store } from '@ngrx/store';
 import { RemoveActivity } from 'src/app/timeline/actions';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-activity',
@@ -21,7 +22,7 @@ import { RemoveActivity } from 'src/app/timeline/actions';
   styleUrls: ['./activity.component.sass']
 })
 export class ActivityComponent implements OnChanges, OnInit {
-  @Input() activity: Activity | any;
+  @Input() activity: Activity;
   @Input() pixelsToMinutesRatio: number;
 
   showControls = false;
@@ -53,18 +54,17 @@ export class ActivityComponent implements OnChanges, OnInit {
   }
 
   get startPosition() {
-    const currentDate = new Date(this.activity.startingAt).setHours(0, 0, 0, 0);
-    const startTime = new Date(this.activity.startingAt);
-    const millisecondOfDay = startTime.getTime() - currentDate;
-    const minuteOfDay = millisecondOfDay / 1000 / 60;
+    const startOfDay = DateTime.local().startOf('day');
+    const startTime = DateTime.fromJSDate(new Date(this.activity.startingAt));
+    const minuteOfDay = Math.round(startTime.diff(startOfDay).as('minutes'));
     return Math.round(minuteOfDay * this.pixelsToMinutesRatio);
   }
 
   get height() {
-    const timeDifference =
-      new Date(this.activity.endingAt).getTime() - new Date(this.activity.startingAt).getTime();
-    const lengthInMinutes = timeDifference / 1000 / 60;
-    return Math.round(lengthInMinutes * this.pixelsToMinutesRatio);
+    const startingAt = DateTime.fromJSDate(new Date(this.activity.startingAt));
+    const endingAt = DateTime.fromJSDate(new Date(this.activity.endingAt));
+    const activityDurationInMinutes = Math.round(endingAt.diff(startingAt).as('minutes'));
+    return Math.round(activityDurationInMinutes * this.pixelsToMinutesRatio);
   }
 
   removeActivity() {

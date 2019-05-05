@@ -12,6 +12,7 @@ import {
 import { Activity, ActivityType } from 'src/app/models';
 import { ActivityComponent } from '../../activities/activity/activity.component';
 import { ComponentFactory } from '@angular/core/src/render3';
+import { Duration } from 'luxon';
 
 @Component({
   selector: 'app-activities-timeline',
@@ -19,7 +20,7 @@ import { ComponentFactory } from '@angular/core/src/render3';
   styleUrls: ['./activities-timeline.component.sass']
 })
 export class ActivitiesTimelineComponent implements OnInit, OnChanges {
-  @Input() interval: number;
+  @Input() interval: Duration;
   @Input() segmentHeight: number;
   @Input() activities: Activity[];
 
@@ -36,10 +37,9 @@ export class ActivitiesTimelineComponent implements OnInit, OnChanges {
 
     this.activities.forEach(activity => {
       let factory = this.componentFactoryResolver.resolveComponentFactory(ActivityComponent);
-      const componentRef = this.container.createComponent(factory);
-      (<ActivityComponent>componentRef.instance).activity = activity;
-      (<ActivityComponent>componentRef.instance).pixelsToMinutesRatio =
-        this.segmentHeight / this.interval;
+      const componentRef: ActivityComponent = this.container.createComponent(factory).instance;
+      componentRef.activity = activity;
+      componentRef.pixelsToMinutesRatio = this.segmentHeight / this.interval.as('minutes');
     });
   }
 

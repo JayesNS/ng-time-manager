@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
 import { AddActivity } from '../../actions';
-import { User, Activity } from 'src/app/models';
+import { User, Activity, ActivityType } from 'src/app/models';
 import { selectAuthUser } from 'src/app/auth/state';
 import { MatDialogRef } from '@angular/material';
 
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
 @Component({
   selector: 'app-activity-editor',
   templateUrl: './activity-editor.component.html',
@@ -17,6 +17,7 @@ import { DateTime, Duration } from 'luxon';
 export class ActivityEditorComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   user: User;
+  activityTypes: string[] = Object.values(ActivityType);
 
   activityForm: FormGroup = new FormGroup({
     type: new FormControl('', Validators.required),

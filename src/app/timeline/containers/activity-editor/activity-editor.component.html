@@ -1,12 +1,20 @@
 <h1 mat-dialog-title>Add new activity</h1>
 <div mat-dialog-content>
   <form action="javascript:void(0);" [formGroup]="activityForm">
-    <mat-form-field>
-      <input matInput type="text" formControlName="type" placeholder="Type" required />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" formControlName="title" placeholder="Title" required />
-    </mat-form-field>
+    <div>
+      <mat-form-field>
+        <mat-select formControlName="type" placeholder="Type" required>
+          <mat-option *ngFor="let type of activityTypes" [value]="type">{{
+            type | titlecase
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <input matInput type="text" formControlName="title" placeholder="Title" required />
+      </mat-form-field>
+    </div>
     <div formGroupName="startingAt">
       <mat-form-field>
         <input
@@ -55,7 +63,7 @@
     </div>
   </form>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="actions">
   <button mat-flat-button (click)="onCancel()">Cancel</button>
   <button
     type="submit"
@@ -63,41 +71,9 @@
     mat-flat-button
     (click)="onSubmit()"
     mat-dialog-close
-    cdkFocusInitial
     color="primary"
     [disabled]="activityForm.invalid"
   >
     Save
   </button>
 </div>
-
-<!-- <form action="javascript:void(0);" [formGroup]="activityForm" (submit)="onSubmit()">
-  <div>
-    <label>
-      Type
-      <input type="text" formControlName="type" required />
-    </label>
-  </div>
-  <div>
-    <label>
-      Title
-      <input type="text" formControlName="title" required />
-    </label>
-  </div>
-  <div>
-    <label formGroupName="startingAt">
-      StartingAt
-      <input type="date" formControlName="date" required />
-      <input type="time" formControlName="time" required />
-    </label>
-  </div>
-  <div>
-    <label formGroupName="endingAt">
-      EndingAt
-      <input type="date" formControlName="date" required />
-      <input type="time" formControlName="time" required />
-    </label>
-  </div>
-  <button type="submit">Zapisz</button>
-</form>
- -->

@@ -1,13 +1,21 @@
 <div class="controls">
   <mat-form-field>
-    <mat-select [(value)]="interval" placeholder="Time interval (minutes)">
+    <mat-select
+      [value]="interval.minutes"
+      (selectionChange)="changeInterval($event)"
+      placeholder="Time interval (minutes)"
+    >
       <mat-option *ngFor="let interval of intervals" [value]="interval">
         {{ interval }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="number" [(ngModel)]="segmentHeight" placeholder="Segment height" />
+    <mat-select [value]="zoom" (selectionChange)="changeZoom($event)" placeholder="Zoom">
+      <mat-option *ngFor="let zoom of zooms" [value]="zoom">
+        {{ zoom | percent }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field>
     <mat-datepicker #picker></mat-datepicker>
@@ -16,8 +24,8 @@
       matInput
       [matDatepicker]="picker"
       placeholder="Choose a date"
-      [value]="date"
-      (dateChange)="onDateChange($event)"
+      [value]="date.toJSDate()"
+      (dateChange)="changeDate($event)"
     />
   </mat-form-field>
 </div>
@@ -25,7 +33,7 @@
   class="timeline"
   [activities]="activities$ | async"
   [interval]="interval"
-  [segmentHeight]="segmentHeight"
+  [segmentHeight]="segmentHeight * zoom"
 ></app-timeline>
 <button class="open-editor" mat-fab color="primary" (click)="openEditor()">
   <mat-icon>add</mat-icon>

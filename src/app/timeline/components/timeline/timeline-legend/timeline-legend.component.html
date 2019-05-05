@@ -1,7 +1,3 @@
-<div
-  *ngFor="let marking of markings; index as i"
-  class="marking"
-  [ngStyle]="{ 'height.px': segmentHeight }"
->
-  {{ calcHour(i) | date: 'HH:mm' }}
+<div *ngFor="let marking of markings" class="marking" [ngStyle]="{ 'height.px': segmentHeight }">
+  {{ marking | date: 'HH:mm' }}
 </div>

@@ -4,63 +4,60 @@ import {
   Renderer2,
   ViewChild,
   OnChanges,
-  AfterViewInit,
   Input,
   OnInit
 } from '@angular/core';
 import { Activity } from 'src/app/models';
+import { Duration, DateTime } from 'luxon';
 
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.sass']
 })
-export class TimelineComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input() interval;
+export class TimelineComponent implements OnInit, OnChanges {
+  @Input() interval: Duration;
   @Input() segmentHeight;
   @Input() activities: Activity[];
 
-  currentHour: number;
+  currentDate = DateTime.local();
 
-  @ViewChild('container') container: ElementRef;
   @ViewChild('timeIndicator') timeIndicator: ElementRef;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private elRef: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit() {
-    setInterval(() => this.moveTimeIndicatorToNow(), 0);
+    setInterval(() => this.moveTimeIndicatorToNow(), 1000);
   }
 
-  // FIXME: scrollToNow not working when segmentHeight changes
-  ngAfterViewInit(): void {
-    this.scrollToNow();
-    this.moveTimeIndicatorToNow();
-  }
   ngOnChanges(): void {
     this.scrollToNow();
     this.moveTimeIndicatorToNow();
   }
 
   setCurrentHour() {
-    const date = new Date();
-    const minutes = Math.round(date.getMinutes() / this.interval) * this.interval;
-    const hour = date.getHours() + minutes / 60;
-    return hour;
+    return this.currentDate.hour;
   }
 
   moveTimeIndicatorToNow() {
-    const date = new Date();
-    const hour = date.getHours() + date.getMinutes() / 60 + date.getSeconds() / 3600;
-    const position = hour * this.segmentHeight * (60 / this.interval) + 'px';
+    const date = DateTime.local().startOf('day');
+    const time = Math.abs(date.diffNow('hours').hours);
+    const position = time * this.segmentHeight * (1 / this.interval.as('hours')) + 'px';
     tick(() => this.renderer.setStyle(this.timeIndicator.nativeElement, 'top', position));
   }
 
   scrollToNow() {
-    this.currentHour = this.setCurrentHour();
-    this.scrollTo(this.currentHour * this.segmentHeight * (60 / this.interval));
+    const startOfDay = DateTime.local().startOf('day');
+    const hourOfDay = Math.abs(startOfDay.diffNow('hours').hours);
+    const halfOfTimelineHeight = this.elRef.nativeElement.offsetHeight / 2;
+    const scrollTo =
+      hourOfDay * this.segmentHeight * (1 / this.interval.as('hours')) - halfOfTimelineHeight;
+    this.scrollTo(scrollTo);
   }
   scrollTo(scrollTo: number) {
-    tick(() => this.renderer.setProperty(this.container.nativeElement, 'scrollTop', scrollTo));
+    tick(() => {
+      this.renderer.setProperty(this.elRef.nativeElement, 'scrollTop', scrollTo);
+    });
   }
 }
 

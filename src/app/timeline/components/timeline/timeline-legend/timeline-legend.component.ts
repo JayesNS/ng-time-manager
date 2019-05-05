@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, ElementRef, Renderer2 } from '@angular/core';
+import { Duration, DateTime } from 'luxon';
 
 @Component({
   selector: 'app-timeline-legend',
@@ -12,27 +13,24 @@ export class TimelineLegendComponent implements OnInit, OnChanges {
   private readonly _minutesInHour = 60;
 
   @Input() segmentHeight: number;
-  @Input() interval: number;
+  @Input() interval: Duration;
 
   markings: Date[];
 
   constructor(private elRef: ElementRef, private renderer: Renderer2) {}
 
   calcHour(marking: number): Date {
-    const currentDate = new Date().setHours(0, 0, 0, 0);
-    return new Date(
-      currentDate + marking * this._millisecondsInSecond * this._secondsInMinute * this.interval
-    );
+    const currentDate = DateTime.local().startOf('day');
+    const minuteOfDay = marking * this.interval.as('minutes');
+    return currentDate.plus({ minutes: minuteOfDay }).toJSDate();
   }
 
   ngOnInit() {}
   ngOnChanges() {
-    const markingAmount = this._hoursInDay * (this._minutesInHour / this.interval);
-
-    this.markings = new Array(Math.round(markingAmount));
-
-    Array.from(this.elRef.nativeElement.children).forEach(element =>
-      this.renderer.setStyle(element, 'height', this.segmentHeight + 'px')
-    );
+    this.markings = [];
+    const markingAmount = 24 / this.interval.as('hours');
+    for (let i = 0; i < markingAmount; i++) {
+      this.markings.push(this.calcHour(i));
+    }
   }
 }
