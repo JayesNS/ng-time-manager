@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogClose } from '@angular/material';
 import { Activity } from 'src/app/models';
+import { Store } from '@ngrx/store';
+import { RemoveActivity } from '../../actions';
 
 @Component({
   selector: 'app-activity-details',
@@ -10,8 +12,17 @@ import { Activity } from 'src/app/models';
 export class ActivityDetailsComponent implements OnInit {
   activity: Activity;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { activity: Activity }) {
+  constructor(
+    private store: Store<any>,
+    @Inject(MAT_DIALOG_DATA) public data: { activity: Activity },
+    private dialog: MatDialog
+  ) {
     this.activity = this.data.activity;
+  }
+
+  removeActivity() {
+    this.store.dispatch(new RemoveActivity({ activity: this.activity }));
+    this.dialog.getDialogById('ActivityDetails').close();
   }
 
   ngOnInit() {}

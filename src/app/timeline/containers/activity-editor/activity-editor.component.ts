@@ -37,6 +37,7 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
         [Validators.required]
       )
     }),
+    description: new FormControl(''),
     category: new FormControl('')
   });
 

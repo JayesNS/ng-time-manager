@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { map, catchError, switchMap, tap } from 'rxjs/operators';
 import { of, EMPTY } from 'rxjs';
@@ -74,11 +74,11 @@ export class AuthEffects {
     )
   );
 
-  @Effect()
+  /* @Effect()
   loadUserFailure$ = this.actions$.pipe(
     ofType<LoadUserFailure>(ActionTypes.LoadUserFailure),
     map(() => new LogOut())
-  );
+  ); */
 
   @Effect()
   logOut$ = this.actions$.pipe(
@@ -136,6 +136,7 @@ export class AuthEffects {
     private authService: AuthService,
     private users: UserService,
     private router: Router,
+    private route: ActivatedRoute,
     private firebase: AngularFireAuth
   ) {}
 }

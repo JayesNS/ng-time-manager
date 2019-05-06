@@ -34,7 +34,10 @@ export class ActivityComponent implements OnChanges, OnInit {
   }
 
   openDetails() {
-    this.dialog.open(ActivityDetailsComponent, { data: { activity: this.activity } });
+    this.dialog.open(ActivityDetailsComponent, {
+      id: 'ActivityDetails',
+      data: { activity: this.activity }
+    });
   }
 
   constructor(
@@ -55,7 +58,7 @@ export class ActivityComponent implements OnChanges, OnInit {
   get startPosition() {
     const startOfDay = DateTime.local().startOf('day');
     const startTime = DateTime.fromJSDate(new Date(this.activity.startingAt));
-    const minuteOfDay = Math.round(startTime.diff(startOfDay).as('minutes'));
+    const minuteOfDay = Math.floor(startTime.diff(startOfDay).as('minutes'));
     return Math.round(minuteOfDay * this.pixelsToMinutesRatio);
   }
 

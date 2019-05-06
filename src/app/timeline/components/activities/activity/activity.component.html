@@ -5,7 +5,10 @@
   <header>
     {{ activity.title }}
   </header>
-  <!-- <hr /> -->
+  <hr />
+  <p class="description" *ngIf="activity.description">
+    {{ activity.description }}
+  </p>
 </div>
 <div class="controls" (mouseleave)="showControls = false" [ngClass]="{ visible: showControls }">
   <button mat-icon-button color="primary" (click)="removeActivity()">

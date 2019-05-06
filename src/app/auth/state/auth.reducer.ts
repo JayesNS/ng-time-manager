@@ -10,7 +10,7 @@ export interface State {
 const initialState: State = {
   firebaseUser: null,
   user: null,
-  loading: false
+  loading: true
 };
 
 export function reducer(state: State = initialState, action: AuthActions): State {
@@ -22,7 +22,7 @@ export function reducer(state: State = initialState, action: AuthActions): State
       return { ...state, loading: false, user: action.payload.user };
     }
     case ActionTypes.LoadUserFailure: {
-      return initialState;
+      return { ...initialState, loading: false };
     }
     case ActionTypes.SignInSuccess: {
       return { ...state, firebaseUser: action.payload.firebaseUser };
@@ -31,7 +31,7 @@ export function reducer(state: State = initialState, action: AuthActions): State
       return initialState;
     }
     case ActionTypes.LogOut: {
-      return initialState;
+      return { ...initialState, loading: false };
     }
     default:
       return state;

@@ -12,12 +12,14 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: './auth/auth.module#AuthModule',
-    canActivate: [NotAuthorizedGuard]
+    canActivate: [NotAuthorizedGuard],
+    resolve: { session: SessionResolverService }
   },
   {
     path: 'timeline',
     loadChildren: './timeline/timeline.module#TimelineModule',
-    canActivate: [AuthorizedGuard]
+    canActivate: [AuthorizedGuard],
+    resolve: { session: SessionResolverService }
   },
   {
     path: '',

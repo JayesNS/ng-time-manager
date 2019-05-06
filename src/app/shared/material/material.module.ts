@@ -11,9 +11,11 @@ import {
   MatIconModule,
   MatDialogModule,
   MatAutocompleteModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatTextareaAutosize
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [],
@@ -30,6 +32,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatDialogModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    TextFieldModule,
     NgxMaterialTimepickerModule
   ]
 })
