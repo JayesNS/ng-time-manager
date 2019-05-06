@@ -1,15 +1,18 @@
-<mat-toolbar class="toolbar" color="accent">
-  <nav>
-    <div>
-      <a mat-button routerLink="home">Home</a>
-      <a mat-button *ngIf="isUserAuthenticated$ | async" routerLink="timeline">Timeline</a>
-    </div>
-    <div>
-      <a mat-flat-button color="primary" *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth"
-        >Sign In</a
-      >
-      <app-log-out></app-log-out>
-    </div>
-  </nav>
-</mat-toolbar>
-<router-outlet></router-outlet>
+<ng-container *ngIf="!(isLoading$ | async)">
+  <mat-toolbar class="toolbar" color="accent">
+    <nav>
+      <div>
+        <a mat-button routerLink="home">Home</a>
+        <a mat-button *ngIf="isUserAuthenticated$ | async" routerLink="timeline">Timeline</a>
+      </div>
+      <div>
+        <a mat-flat-button color="primary" *ngIf="!(isUserAuthenticated$ | async)" routerLink="auth"
+          >Sign In</a
+        >
+        <app-log-out></app-log-out>
+      </div>
+    </nav>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
+</ng-container>
+<mat-spinner *ngIf="isLoading$ | async" class="loading-spinner"></mat-spinner>

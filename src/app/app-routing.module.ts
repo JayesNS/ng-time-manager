@@ -6,6 +6,7 @@ import {
   NotAuthorizedGuardService as NotAuthorizedGuard,
   AuthorizedGuardService as AuthorizedGuard
 } from './auth/services';
+import { SessionResolverService } from './auth/services/session-resolver.service';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: HomeComponent
+    component: HomeComponent,
+    resolve: { session: SessionResolverService }
   },
   {
     path: '**',

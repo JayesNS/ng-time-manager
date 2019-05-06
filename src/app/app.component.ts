@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectIsLoggedIn } from './auth/state';
+import { selectIsLoggedIn, selectLoading } from './auth/state';
 import { Observable } from 'rxjs';
-import { RestoreSession } from './auth/actions/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +10,9 @@ import { RestoreSession } from './auth/actions/auth.actions';
 })
 export class AppComponent {
   isUserAuthenticated$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
   constructor(private store: Store<{}>) {
     this.isUserAuthenticated$ = this.store.select(selectIsLoggedIn);
-    this.store.dispatch(new RestoreSession());
+    this.isLoading$ = this.store.select(selectLoading);
   }
 }

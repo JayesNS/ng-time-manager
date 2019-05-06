@@ -68,7 +68,7 @@ export class AuthEffects {
           if (user) {
             return of(new LoadUser({ firebaseUser: user }));
           }
-          return EMPTY;
+          return of(new LoadUserFailure({ error: '' }));
         })
       )
     )

@@ -10,7 +10,8 @@ import {
   MatNativeDateModule,
   MatIconModule,
   MatDialogModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
@@ -28,6 +29,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatIconModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
     NgxMaterialTimepickerModule
   ]
 })

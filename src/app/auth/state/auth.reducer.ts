@@ -4,20 +4,24 @@ import { User } from '../../models';
 export interface State {
   firebaseUser: firebase.User;
   user: User;
+  loading: boolean;
 }
 
 const initialState: State = {
   firebaseUser: null,
-  user: null
+  user: null,
+  loading: false
 };
 
 export function reducer(state: State = initialState, action: AuthActions): State {
   switch (action.type) {
+    case ActionTypes.RestoreSession: {
+      return { ...state, loading: true };
+    }
     case ActionTypes.LoadUserSuccess: {
-      return { ...state, user: action.payload.user };
+      return { ...state, loading: false, user: action.payload.user };
     }
     case ActionTypes.LoadUserFailure: {
-      console.log({ payload: action.payload });
       return initialState;
     }
     case ActionTypes.SignInSuccess: {

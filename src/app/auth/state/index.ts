@@ -30,6 +30,10 @@ export const selectIsLoggedIn = createSelector(
   selectAuthUser,
   (user: User) => !!user
 );
+export const selectLoading = createSelector(
+  selectAuth,
+  (state: fromAuth.State) => state.loading
+);
 
 export const selectSignInPage = createSelector(
   select,
