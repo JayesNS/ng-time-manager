@@ -24,6 +24,8 @@ export class ActivityComponent implements OnChanges, OnInit {
   @Input() activity: Activity;
   @Input() pixelsToMinutesRatio: number;
 
+  positioning: ActivityPositioning;
+
   showControls = false;
 
   @HostListener('mouseover') onMouseOver() {
@@ -47,29 +49,34 @@ export class ActivityComponent implements OnChanges, OnInit {
     private dialog: MatDialog
   ) {}
   ngOnInit() {
-    this.renderer.setStyle(this.elRef.nativeElement, 'top', this.startPosition + 'px');
-    this.renderer.setStyle(this.elRef.nativeElement, 'height', this.height + 'px');
+    this.positioning = this.calcPositioning();
+
+    this.renderer.setStyle(this.elRef.nativeElement, 'top', this.positioning.start + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'height', this.positioning.height + 'px');
   }
   ngOnChanges() {
-    this.renderer.setStyle(this.elRef.nativeElement, 'top', this.startPosition + 'px');
-    this.renderer.setStyle(this.elRef.nativeElement, 'height', this.height + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'top', this.positioning.start + 'px');
+    this.renderer.setStyle(this.elRef.nativeElement, 'height', this.positioning.height + 'px');
   }
 
-  get startPosition() {
-    const startOfDay = DateTime.local().startOf('day');
-    const startTime = DateTime.fromJSDate(new Date(this.activity.startingAt));
-    const minuteOfDay = Math.floor(startTime.diff(startOfDay).as('minutes'));
-    return Math.round(minuteOfDay * this.pixelsToMinutesRatio);
-  }
-
-  get height() {
-    const startingAt = DateTime.fromJSDate(new Date(this.activity.startingAt));
-    const endingAt = DateTime.fromJSDate(new Date(this.activity.endingAt));
-    const activityDurationInMinutes = Math.round(endingAt.diff(startingAt).as('minutes'));
-    return Math.round(activityDurationInMinutes * this.pixelsToMinutesRatio);
+  calcPositioning(): ActivityPositioning {
+    const startDatetime = DateTime.fromJSDate(new Date(this.activity.startingAt));
+    const endDatetime = DateTime.fromJSDate(new Date(this.activity.endingAt));
+    const startOfDay = startDatetime.startOf('day');
+    const durationInMinutes = endDatetime.diff(startDatetime).as('minutes');
+    const minuteOfDay = startDatetime.diff(startOfDay).as('minutes');
+    const start = minuteOfDay * this.pixelsToMinutesRatio;
+    const height = durationInMinutes * this.pixelsToMinutesRatio;
+    return { start, height, end: 0 };
   }
 
   removeActivity() {
     this.store.dispatch(new RemoveActivity({ activity: this.activity }));
   }
+}
+
+interface ActivityPositioning {
+  start: number;
+  height: number;
+  end: number;
 }

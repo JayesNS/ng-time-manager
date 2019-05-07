@@ -19,12 +19,30 @@ export const selectActivities = createSelector(
 export const selectFilteredActivities = createSelector(
   selectActivities,
   (activities: Activity[], props: { date: Date; category?: string }) =>
-    activities.filter(activity => {
-      const target = DateTime.fromJSDate(props.date).startOf('day');
-      const start = DateTime.fromJSDate(new Date(activity.startingAt)).startOf('day');
-      return start.equals(target) && (props.category ? activity.category === props.category : true);
-    })
+    activities
+      .filter(activity => {
+        const targetDay = DateTime.fromJSDate(props.date).startOf('day');
+        const startingDay = DateTime.fromJSDate(new Date(activity.startingAt)).startOf('day');
+        const endingDay = DateTime.fromJSDate(new Date(activity.endingAt)).startOf('day');
+        return (
+          (startingDay.equals(targetDay) || endingDay.equals(targetDay)) &&
+          (props.category ? activity.category === props.category : true)
+        );
+      })
+      .map(activity => trimActivityTime(activity, props.date))
 );
+
+function trimActivityTime(activity, date) {
+  const target = DateTime.fromJSDate(date);
+  let startingAt = DateTime.fromJSDate(new Date(activity.startingAt));
+  let endingAt = DateTime.fromJSDate(new Date(activity.endingAt));
+  if (startingAt.startOf('day') <= target && endingAt.startOf('day') >= target) {
+    startingAt = startingAt < target.startOf('day') ? target.startOf('day') : startingAt;
+    endingAt = endingAt > target.endOf('day') ? target.endOf('day') : endingAt;
+    return { ...activity, startingAt: startingAt.toJSDate(), endingAt: endingAt.toJSDate() };
+  }
+  return activity;
+}
 
 export const selectCategories = createSelector(
   selectActivities,
