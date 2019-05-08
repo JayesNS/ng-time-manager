@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material';
 import { ActivityDetailsComponent } from 'src/app/timeline/containers';
 import { ActivitiesService } from 'src/app/timeline/services/activities.service';
 import { Store } from '@ngrx/store';
-import { RemoveActivity } from 'src/app/timeline/actions';
+import { RemoveActivity, EditActivity, OpenActivityEditor } from 'src/app/timeline/actions';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -72,6 +72,10 @@ export class ActivityComponent implements OnChanges, OnInit {
 
   removeActivity() {
     this.store.dispatch(new RemoveActivity({ activity: this.activity }));
+  }
+
+  editActivity() {
+    this.store.dispatch(new OpenActivityEditor({ activity: this.activity }));
   }
 }
 

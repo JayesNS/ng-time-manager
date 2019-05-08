@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 import * as fromStore from '../../state';
-import { LoadActivities } from '../../actions';
+import { LoadActivities, OpenActivityEditor } from '../../actions';
 import { User, Activity } from 'src/app/models';
 import * as fromAuth from '../../../auth/state';
 import { MatDialog, MatDatepickerInputEvent, MatSelectChange } from '@angular/material';
@@ -62,7 +62,7 @@ export class TimelineViewComponent implements OnDestroy {
   }
 
   openEditor() {
-    this.dialog.open(ActivityEditorComponent);
+    this.store.dispatch(new OpenActivityEditor());
   }
 
   ngOnDestroy(): void {

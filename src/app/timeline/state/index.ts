@@ -32,17 +32,10 @@ export const selectFilteredActivities = createSelector(
       .map(activity => trimActivityTime(activity, props.date))
 );
 
-function trimActivityTime(activity, date) {
-  const target = DateTime.fromJSDate(date);
-  let startingAt = DateTime.fromJSDate(new Date(activity.startingAt));
-  let endingAt = DateTime.fromJSDate(new Date(activity.endingAt));
-  if (startingAt.startOf('day') <= target && endingAt.startOf('day') >= target) {
-    startingAt = startingAt < target.startOf('day') ? target.startOf('day') : startingAt;
-    endingAt = endingAt > target.endOf('day') ? target.endOf('day') : endingAt;
-    return { ...activity, startingAt: startingAt.toJSDate(), endingAt: endingAt.toJSDate() };
-  }
-  return activity;
-}
+export const selectActivityInEditor = createSelector(
+  selectTimeline,
+  fromTimeline.selectActivityInEditor
+);
 
 export const selectCategories = createSelector(
   selectActivities,
@@ -54,3 +47,15 @@ export const selectCategories = createSelector(
       )
     )
 );
+
+function trimActivityTime(activity, date) {
+  const target = DateTime.fromJSDate(date);
+  let startingAt = DateTime.fromJSDate(new Date(activity.startingAt));
+  let endingAt = DateTime.fromJSDate(new Date(activity.endingAt));
+  if (startingAt.startOf('day') <= target && endingAt.startOf('day') >= target) {
+    startingAt = startingAt < target.startOf('day') ? target.startOf('day') : startingAt;
+    endingAt = endingAt > target.endOf('day') ? target.endOf('day') : endingAt;
+    return { ...activity, startingAt: startingAt.toJSDate(), endingAt: endingAt.toJSDate() };
+  }
+  return activity;
+}

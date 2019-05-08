@@ -18,6 +18,10 @@ export class ActivitiesService {
     return this.http.post<Activity>('api/activities', { uid: user._id, activity });
   }
 
+  editActivity$(activity: Activity): Observable<Activity> {
+    return this.http.put<Activity>('api/activities', { activity });
+  }
+
   removeActivity$(activity: Activity): Observable<Activity> {
     return this.http.delete<Activity>(`api/activities/${activity._id}`);
   }

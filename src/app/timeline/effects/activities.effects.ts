@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { of, EMPTY } from 'rxjs';
+import { switchMap, map, catchError, tap } from 'rxjs/operators';
 
 import {
   ActionTypes,
@@ -13,14 +13,19 @@ import {
   AddActivityFailure,
   RemoveActivity,
   RemoveActivitySuccess,
-  RemoveActivityFailure
+  RemoveActivityFailure,
+  OpenActivityEditor,
+  CloseActivityEditor,
+  EditActivity,
+  EditActivityFailure,
+  EditActivitySuccess
 } from '../actions';
 import { ActivitiesService } from '../services/activities.service';
+import { MatDialog } from '@angular/material';
+import { ActivityEditorComponent } from '../containers';
 
 @Injectable()
 export class ActivitiesEffects {
-  constructor(private actions$: Actions, private activities: ActivitiesService) {}
-
   @Effect()
   loadActivities$ = this.actions$.pipe(
     ofType<LoadActivities>(ActionTypes.LoadActivities),
@@ -45,6 +50,30 @@ export class ActivitiesEffects {
   );
 
   @Effect()
+  addActivitySuccess$ = this.actions$.pipe(
+    ofType<AddActivitySuccess>(ActionTypes.AddActivitySuccess),
+    map(() => new CloseActivityEditor({ close: true }))
+  );
+
+  @Effect()
+  editActivity$ = this.actions$.pipe(
+    ofType<EditActivity>(ActionTypes.EditActivity),
+    map(action => action.payload),
+    switchMap(payload =>
+      this.activities.editActivity$(payload.activity).pipe(
+        switchMap(activity => of(new EditActivitySuccess({ activity }))),
+        catchError(error => of(new EditActivityFailure({ error })))
+      )
+    )
+  );
+
+  @Effect()
+  editActivitySuccess$ = this.actions$.pipe(
+    ofType<EditActivitySuccess>(ActionTypes.EditActivitySuccess),
+    map(() => new CloseActivityEditor({ close: true }))
+  );
+
+  @Effect()
   removeActivity$ = this.actions$.pipe(
     ofType<RemoveActivity>(ActionTypes.RemoveActivity),
     map(action => action.payload),
@@ -55,4 +84,36 @@ export class ActivitiesEffects {
       )
     )
   );
+
+  @Effect()
+  openActivityEditor$ = this.actions$.pipe(
+    ofType<OpenActivityEditor>(ActionTypes.OpenActivityEditor),
+    map(action => action.payload),
+    switchMap(payload => {
+      this.dialog.open(ActivityEditorComponent, {
+        id: 'ActivityEditor',
+        data: payload ? payload.activity : undefined
+      });
+      return EMPTY;
+    })
+  );
+
+  @Effect()
+  closeActivityEditor$ = this.actions$.pipe(
+    ofType<CloseActivityEditor>(ActionTypes.CloseActivityEditor),
+    map(action => action.payload),
+    switchMap(payload => {
+      console.log('effect');
+      if (payload.close) {
+        this.dialog.getDialogById('ActivityEditor').close();
+      }
+      return EMPTY;
+    })
+  );
+
+  constructor(
+    private actions$: Actions,
+    private dialog: MatDialog,
+    private activities: ActivitiesService
+  ) {}
 }

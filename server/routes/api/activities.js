@@ -24,6 +24,19 @@ router.post('/', (req, res) => {
     });
 });
 
+// Modify activity
+router.put('/', (req, res) => {
+  const { activity } = helpers.fetchParams(req.body, ['activity']);
+
+  Activity.findByIdAndUpdate(activity._id, activity, { new: true })
+    .then(activity => {
+      res.json(activity);
+    })
+    .catch(error => {
+      helpers.handleError(error, res, 503);
+    });
+});
+
 // Fetching activities for user
 router.get('/:uid', (req, res) => {
   const { uid } = helpers.fetchParams(req.params, ['uid']);

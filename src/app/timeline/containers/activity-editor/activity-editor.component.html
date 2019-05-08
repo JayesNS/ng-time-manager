@@ -88,13 +88,10 @@
   </form>
 </div>
 <div mat-dialog-actions class="actions">
-  <button mat-flat-button (click)="onCancel()">Cancel</button>
+  <button mat-flat-button mat-dialog-close>Cancel</button>
   <button
-    type="submit"
-    for="form"
     mat-flat-button
-    (click)="onSubmit()"
-    mat-dialog-close
+    (click)="saveActivity()"
     color="primary"
     [disabled]="activityForm.invalid"
   >

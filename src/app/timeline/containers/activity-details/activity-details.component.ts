@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogClose } from '@angular/material';
 import { Activity } from 'src/app/models';
 import { Store } from '@ngrx/store';
-import { RemoveActivity } from '../../actions';
+import { RemoveActivity, OpenActivityEditor } from '../../actions';
 
 @Component({
   selector: 'app-activity-details',
@@ -23,6 +23,10 @@ export class ActivityDetailsComponent implements OnInit {
   removeActivity() {
     this.store.dispatch(new RemoveActivity({ activity: this.activity }));
     this.dialog.getDialogById('ActivityDetails').close();
+  }
+
+  editActivity() {
+    this.store.dispatch(new OpenActivityEditor({ activity: this.activity }));
   }
 
   ngOnInit() {}
