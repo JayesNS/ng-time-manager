@@ -1,5 +1,10 @@
-<div class="time">
-  {{ activity.startingAt | date: 'HH:mm' }} - {{ activity.endingAt | date: 'HH:mm' }}
+<div class="top-bar">
+  <div class="time">
+    {{ activity.startingAt | date: 'HH:mm' }} - {{ activity.endingAt | date: 'HH:mm' }}
+  </div>
+  <div class="category" *ngIf="activity.category">
+    {{ activity.category }}
+  </div>
 </div>
 <div class="activity" (click)="openDetails()">
   <header>

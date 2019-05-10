@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../../models/user');
 const Activity = require('../../models/activity');
+const { Todo } = require('../../models/todo');
 const helpers = require('../../helpers');
 
 // Create new activity
@@ -28,7 +29,7 @@ router.post('/', (req, res) => {
 router.put('/', (req, res) => {
   const { activity } = helpers.fetchParams(req.body, ['activity']);
 
-  Activity.findByIdAndUpdate(activity._id, activity, { new: true })
+  Activity.findByIdAndUpdate(activity._id, activity, { new: true, upsert: true })
     .then(activity => {
       res.json(activity);
     })

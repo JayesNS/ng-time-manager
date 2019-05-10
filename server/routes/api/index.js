@@ -9,5 +9,6 @@ router.get('/', (req, res) => {
 
 router.use('/users', require('./users'));
 router.use('/activities', require('./activities'));
+router.use('/todos', require('./todos'));
 
 module.exports = router;

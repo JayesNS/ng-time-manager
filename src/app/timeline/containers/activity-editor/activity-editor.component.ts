@@ -1,5 +1,5 @@
 import { OnInit, OnDestroy, Component } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
 
@@ -34,7 +34,10 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
     this.categories$ = this.store.select(selectCategories);
 
     this.store.select(selectActivityInEditor).subscribe(activity => {
-      this.activityType = activity ? activity.type : null;
+      if (activity) {
+        this.editing = true;
+        this.activityType = activity.type;
+      }
       this.activityForm = this.setActivityForm(activity);
     });
   }
@@ -68,7 +71,7 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
       activity = {
         _id: undefined,
         title: '',
-        type: ActivityType.TODO,
+        type: null,
         startingAt: new Date(),
         endingAt: DateTime.fromJSDate(new Date())
           .plus({ minutes: 10 })
@@ -101,7 +104,13 @@ export class ActivityEditorComponent implements OnInit, OnDestroy {
                 title: new FormControl(todo.title),
                 completed: new FormControl(todo.completed)
               })
-          )
+          ),
+          [
+            (control: FormArray) =>
+              this.activityType === ActivityType.TODO && control.length > 0
+                ? null
+                : { error: 'Todo List cannot be empty!' }
+          ]
         )
       }),
       category: new FormControl(activity.category)

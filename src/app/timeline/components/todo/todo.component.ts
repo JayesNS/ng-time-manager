@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Todo } from 'src/app/models/todo.model';
 import { MatCheckboxChange } from '@angular/material';
+import { Store } from '@ngrx/store';
+import { ChangeTodoStatus } from '../../actions';
 
 @Component({
   selector: 'app-todo',
@@ -10,12 +12,12 @@ import { MatCheckboxChange } from '@angular/material';
 export class TodoComponent implements OnInit {
   @Input() todo: Todo;
 
-  constructor() {}
+  constructor(private store: Store<any>) {}
 
   ngOnInit() {}
 
   onStateChange(event: MatCheckboxChange) {
     this.todo.completed = event.checked;
-    console.log('todo state changed', this.todo);
+    this.store.dispatch(new ChangeTodoStatus({ todo: this.todo }));
   }
 }

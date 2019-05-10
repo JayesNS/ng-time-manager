@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { User, Activity } from 'src/app/models';
 import { MatDialogRef } from '@angular/material';
 import { ActivityEditorComponent } from '../containers';
+import { Todo } from 'src/app/models/todo.model';
 
 export enum ActionTypes {
   LoadActivities = '[Timeline Page] Load activities',
@@ -19,6 +20,8 @@ export enum ActionTypes {
   RemoveActivity = '[Activity Component] Remove activity',
   RemoveActivitySuccess = '[Activity API] Remove activity success',
   RemoveActivityFailure = '[Activity API] Remove activity failure',
+
+  ChangeTodoStatus = '[Activity Details] Change todo status',
 
   OpenActivityEditor = '[Timeline Page] Open editor',
   CloseActivityEditor = '[Timeline Page] Close editor'
@@ -96,6 +99,12 @@ export class RemoveActivityFailure implements Action {
   constructor(public payload: { error: string }) {}
 }
 
+export class ChangeTodoStatus implements Action {
+  readonly type = ActionTypes.ChangeTodoStatus;
+
+  constructor(public payload: { todo: Todo }) {}
+}
+
 export class OpenActivityEditor implements Action {
   readonly type = ActionTypes.OpenActivityEditor;
 
@@ -121,5 +130,6 @@ export type TimelineActions =
   | RemoveActivity
   | RemoveActivitySuccess
   | RemoveActivityFailure
+  | ChangeTodoStatus
   | OpenActivityEditor
   | CloseActivityEditor;

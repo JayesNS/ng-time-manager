@@ -18,7 +18,8 @@ import {
   CloseActivityEditor,
   EditActivity,
   EditActivityFailure,
-  EditActivitySuccess
+  EditActivitySuccess,
+  ChangeTodoStatus
 } from '../actions';
 import { ActivitiesService } from '../services/activities.service';
 import { MatDialog } from '@angular/material';
@@ -81,6 +82,19 @@ export class ActivitiesEffects {
       this.activities.removeActivity$(payload.activity).pipe(
         switchMap(activity => of(new RemoveActivitySuccess({ activity }))),
         catchError(error => of(new RemoveActivityFailure({ error })))
+      )
+    )
+  );
+
+  @Effect()
+  changeTodoStatus$ = this.actions$.pipe(
+    ofType<ChangeTodoStatus>(ActionTypes.ChangeTodoStatus),
+    map(action => action.payload),
+    switchMap(payload =>
+      this.activities.editTodo$(payload.todo).pipe(
+        switchMap(todo => {
+          return EMPTY;
+        })
       )
     )
   );

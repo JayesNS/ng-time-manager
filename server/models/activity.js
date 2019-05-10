@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { todoSchema } = require('./todo');
 
 const activitySchema = Schema({
   type: {
@@ -17,7 +18,20 @@ const activitySchema = Schema({
     type: String,
     required: false
   },
-  todoList: { todos: [{ title: { type: String }, completed: { type: Boolean } }] },
+  todoList: {
+    todos: [
+      {
+        title: {
+          type: String,
+          required: true
+        },
+        completed: {
+          type: Boolean,
+          required: true
+        }
+      }
+    ]
+  },
   category: {
     type: String,
     required: false

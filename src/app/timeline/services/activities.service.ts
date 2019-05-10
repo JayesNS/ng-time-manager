@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { User, Activity } from 'src/app/models';
+import { Todo } from 'src/app/models/todo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,9 @@ export class ActivitiesService {
 
   removeActivity$(activity: Activity): Observable<Activity> {
     return this.http.delete<Activity>(`api/activities/${activity._id}`);
+  }
+
+  editTodo$(todo: Todo): Observable<Todo> {
+    return this.http.put<Todo>(`api/todos`, { todo });
   }
 }
