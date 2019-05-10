@@ -20,6 +20,8 @@ import {
   TimelineComponent
 } from './components/timeline';
 import { MaterialModule } from '../shared/material/material.module';
+import { TodoEditorComponent } from './components/todo-editor/todo-editor.component';
+import { TodoComponent } from './components/todo/todo.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { MaterialModule } from '../shared/material/material.module';
     TimelineComponent,
     ActivityEditorComponent,
     ActivityComponent,
-    ActivityDetailsComponent
+    ActivityDetailsComponent,
+    TodoEditorComponent,
+    TodoComponent
   ],
   imports: [
     RouterModule,

@@ -103,7 +103,6 @@ export class ActivitiesEffects {
     ofType<CloseActivityEditor>(ActionTypes.CloseActivityEditor),
     map(action => action.payload),
     switchMap(payload => {
-      console.log('effect');
       if (payload.close) {
         this.dialog.getDialogById('ActivityEditor').close();
       }

@@ -1,0 +1,5 @@
+<div class="todo">
+  <mat-checkbox [checked]="todo.completed" (change)="onStateChange($event)">{{
+    todo.title
+  }}</mat-checkbox>
+</div>

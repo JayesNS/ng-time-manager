@@ -1,16 +1,17 @@
-<div class="container">
-  <h2 mat-dialog-title>
-    {{ activity.title }} ({{ activity.startingAt | date: 'HH:mm' }} -
-    {{ activity.endingAt | date: 'HH:mm' }})
-  </h2>
-  <mat-dialog-content>
-    <p *ngIf="activity.description" class="description">{{ activity.description }}</p>
-  </mat-dialog-content>
-  <mat-dialog-actions class="actions">
-    <button mat-icon-button color="primary" (click)="removeActivity()">
-      <mat-icon>delete</mat-icon></button
-    ><button mat-icon-button color="primary" (click)="editActivity()">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </mat-dialog-actions>
-</div>
+<h2 mat-dialog-title>
+  {{ activity.title }} ({{ activity.startingAt | date: 'HH:mm' }} -
+  {{ activity.endingAt | date: 'HH:mm' }})
+</h2>
+<mat-dialog-content class="container">
+  <p *ngIf="activity.description" class="description">{{ activity.description }}</p>
+  <div *ngIf="activity.todoList" class="todoList">
+    <app-todo [todo]="todo" *ngFor="let todo of activity.todoList.todos"></app-todo>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="actions">
+  <button mat-icon-button color="primary" (click)="removeActivity()">
+    <mat-icon>delete</mat-icon></button
+  ><button mat-icon-button color="primary" (click)="editActivity()">
+    <mat-icon>edit</mat-icon>
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,14 @@
+<label>Todo List</label>
+<div [formGroup]="todoList" class="todo-editor" *ngIf="todos.length > 0">
+  <div class="todo" formArrayName="todos" *ngFor="let todo of todos.controls; let i = index">
+    <mat-form-field class="todo-input" [formGroupName]="i">
+      <input matInput type="text" formControlName="title" [placeholder]="'Todo #' + (i + 1)" />
+    </mat-form-field>
+    <button mat-icon-button color="warn" (click)="removeTodo(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="controls">
+  <button mat-flat-button color="primary" (click)="addTodo()">Add</button>
+</div>

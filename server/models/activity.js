@@ -17,6 +17,7 @@ const activitySchema = Schema({
     type: String,
     required: false
   },
+  todoList: { todos: [{ title: { type: String }, completed: { type: Boolean } }] },
   category: {
     type: String,
     required: false
